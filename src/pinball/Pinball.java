@@ -1,3 +1,5 @@
+package pinball;
+
 import edu.macalester.graphics.CanvasWindow;
 
 public class Pinball {
