@@ -11,6 +11,10 @@ public class Pinball {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
     }
 
+    public void print(String string){
+        System.out.print(string);
+    }
+
     public static void main(String[] args) {
         new Pinball();
     }
