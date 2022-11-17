@@ -25,7 +25,7 @@ public class Ball {
     public boolean updatePosition(double dt, double maxX, double maxY, CanvasWindow canvas) {
         centerX += dx * dt;
         centerY += dy * dt;
-        if (checkCollision(centerX, centerY, canvas)) {
+        if (checkCollision(ball.getX(), ball.getY(), canvas)) {
             dy = -dy;
             centerY += dy * dt;
             ball.setPosition(centerX, centerY);

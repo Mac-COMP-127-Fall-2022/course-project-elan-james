@@ -2,6 +2,7 @@ package pinball;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.events.Key;
+import java.util.Set;
 
 public class Pinball {
     private static final int CANVAS_WIDTH = 500;
@@ -14,8 +15,12 @@ public class Pinball {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
         createBall();
         createFlippers();
-        canvas.animate(() -> updateBall());
+        canvas.animate(() -> {
+            updateBall();
+            moveFlippers();
+        });
         moveFlippers();
+        unPresssed();
     }
 
     public void createBall() {
@@ -32,7 +37,28 @@ public class Pinball {
     }
 
     public void moveFlippers() {
-        canvas.onMouseDown(event -> leftFlipper.updatePosition(event.getPosition().angle()));
+        Set<Key> keys = canvas.getKeysPressed();
+        if (keys.contains(Key.LEFT_ARROW)) {
+            leftFlipper.movePaddleUp(-30);
+            leftFlipper.setPressed(true);
+        }
+        if (keys.contains(Key.RIGHT_ARROW)) {
+            rightFlipper.movePaddleUp(30);
+            rightFlipper.setPressed(true);
+        }
+    }
+
+    public void unPresssed() {
+        canvas.onKeyUp(event -> {
+            if (event.getKey().equals(Key.LEFT_ARROW)) {
+                leftFlipper.setPressed(false);
+                leftFlipper.movePaddleDown(-30);
+            }
+            if (event.getKey().equals(Key.RIGHT_ARROW)) {
+                rightFlipper.setPressed(false);
+                rightFlipper.movePaddleDown(30);
+            }
+        });
     }
 
     public static void main(String[] args) {
