@@ -13,11 +13,11 @@ public class Pinball {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
         createBall();
         createFlippers();
-        updateBall();
+        canvas.animate(() -> updateBall());
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, canvas, 50, 50);
+        ball = new Ball(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, canvas, 50, -50);
     }
 
     public void createFlippers() {
@@ -26,7 +26,7 @@ public class Pinball {
     }
 
     public void updateBall() {
-        canvas.animate(() -> ball.updatePosition(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, canvas));
+        ball.updatePosition(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, canvas);
     }
 
     public static void main(String[] args) {

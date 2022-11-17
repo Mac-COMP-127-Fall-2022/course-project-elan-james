@@ -12,6 +12,8 @@ public class Ball {
     private double centerX, centerY, dx, dy;
 
     public Ball(double centerX, double centerY, CanvasWindow canvas, double initialSpeed, double initialAngle) {
+        this.centerX = centerX;
+        this.centerY = centerY;
         ball = new Ellipse(centerX, centerY, 15, 15);
         ball.setFillColor(Color.BLACK);
         canvas.add(ball);
@@ -23,16 +25,16 @@ public class Ball {
     public boolean updatePosition(double dt, double maxX, double maxY, CanvasWindow canvas) {
         centerX += dx * dt;
         centerY += dy * dt;
-        // if (checkCollision(centerX, centerY, canvas)) {
-        //     dy = -dy;
-        //     dy -= GRAVITY * dt;
-        //     centerY += dy * dt;
-        //     ball.setPosition(centerX, centerY);
-        //     return true;
-        // }
+        if (checkCollision(centerX, centerY, canvas)) {
+            dy = -dy;
+            centerY += dy * dt;
+            ball.setPosition(centerX, centerY);
+            // dy -= GRAVITY * dt;
+            return true;
+        }
         if ((centerX > 0 && centerX < maxX) && (centerY > 0 && centerY < maxY)) {
             ball.setPosition(centerX, centerY);
-            dy -= GRAVITY * dt;
+            // dy -= GRAVITY * dt;
             return true;
         } else if (centerX <= 0 || centerX >= maxX) {
             dx = -dx;
