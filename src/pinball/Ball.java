@@ -61,3 +61,5 @@ public class Ball {
         return false;
     }
 }
+// search circle collision code tutorial
+// from velocity vector, need to find the line perpendicular to the velocity vector

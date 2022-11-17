@@ -10,11 +10,13 @@ public class Pinball {
     private CanvasWindow canvas;
     private Ball ball;
     private Flipper leftFlipper, rightFlipper;
+    private Reflector reflector;
     
     public Pinball() {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
         createBall();
         createFlippers();
+        createReflectors();
         canvas.animate(() -> {
             updateBall();
             moveFlippers();
@@ -24,12 +26,19 @@ public class Pinball {
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, canvas, 50, -50);
+        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -50);
     }
 
     public void createFlippers() {
-        leftFlipper = new Flipper(canvas, 150, 550, 40);
-        rightFlipper = new Flipper(canvas, 275, 550, 140);
+        leftFlipper = new Flipper(150, 550, 40, canvas);
+        rightFlipper = new Flipper(275, 550, 140, canvas);
+    }
+
+    public void createReflectors() {
+        reflector = new Reflector(CANVAS_WIDTH/2, 200, canvas);
+        reflector = new Reflector(100, CANVAS_HEIGHT/2, canvas);
+        reflector = new Reflector(CANVAS_WIDTH/2, 500, canvas);
+        reflector = new Reflector(400, CANVAS_HEIGHT/2, canvas);
     }
 
     public void updateBall() {
