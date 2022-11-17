@@ -14,4 +14,9 @@ public class Flipper {
         flipper.rotateBy(angle);
         canvas.add(flipper);
     }
+
+    public void updatePosition(double angle) {
+        flipper.rotateBy(angle);
+        flipper.rotateBy(-angle);
+    }
 }

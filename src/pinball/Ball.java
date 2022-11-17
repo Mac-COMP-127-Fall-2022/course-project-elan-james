@@ -29,12 +29,12 @@ public class Ball {
             dy = -dy;
             centerY += dy * dt;
             ball.setPosition(centerX, centerY);
-            // dy -= GRAVITY * dt;
+            dy -= GRAVITY * dt;
             return true;
         }
         if ((centerX > 0 && centerX < maxX) && (centerY > 0 && centerY < maxY)) {
             ball.setPosition(centerX, centerY);
-            // dy -= GRAVITY * dt;
+            dy -= GRAVITY * dt;
             return true;
         } else if (centerX <= 0 || centerX >= maxX) {
             dx = -dx;

@@ -1,10 +1,11 @@
 package pinball;
 
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.events.Key;
 
 public class Pinball {
-    private static final int CANVAS_WIDTH = 600;
-    private static final int CANVAS_HEIGHT = 800;
+    private static final int CANVAS_WIDTH = 500;
+    private static final int CANVAS_HEIGHT = 650;
     private CanvasWindow canvas;
     private Ball ball;
     private Flipper leftFlipper, rightFlipper;
@@ -14,6 +15,7 @@ public class Pinball {
         createBall();
         createFlippers();
         canvas.animate(() -> updateBall());
+        moveFlippers();
     }
 
     public void createBall() {
@@ -21,12 +23,16 @@ public class Pinball {
     }
 
     public void createFlippers() {
-        leftFlipper = new Flipper(canvas, 50, 700, 40);
-        rightFlipper = new Flipper(canvas, 500, 700, 140);
+        leftFlipper = new Flipper(canvas, 150, 550, 40);
+        rightFlipper = new Flipper(canvas, 275, 550, 140);
     }
 
     public void updateBall() {
         ball.updatePosition(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, canvas);
+    }
+
+    public void moveFlippers() {
+        canvas.onMouseDown(event -> leftFlipper.updatePosition(event.getPosition().angle()));
     }
 
     public static void main(String[] args) {
