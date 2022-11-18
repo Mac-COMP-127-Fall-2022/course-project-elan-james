@@ -2,6 +2,9 @@ package pinball;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.events.Key;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Pinball {
@@ -10,13 +13,18 @@ public class Pinball {
     private CanvasWindow canvas;
     private Ball ball;
     private Flipper leftFlipper, rightFlipper;
-    private Reflector reflector;
+    private Reflector reflector1, reflector2, reflector3, reflector4;
+    private ArrayList<Reflector> reflectors = new ArrayList<>();
     
     public Pinball() {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
         createBall();
         createFlippers();
         createReflectors();
+        reflectors.add(reflector1);
+        reflectors.add(reflector2);
+        reflectors.add(reflector3);
+        reflectors.add(reflector4);
         canvas.animate(() -> {
             updateBall();
             moveFlippers();
@@ -35,14 +43,21 @@ public class Pinball {
     }
 
     public void createReflectors() {
-        reflector = new Reflector(CANVAS_WIDTH/2, 200, canvas);
-        reflector = new Reflector(100, CANVAS_HEIGHT/2, canvas);
-        reflector = new Reflector(CANVAS_WIDTH/2, 500, canvas);
-        reflector = new Reflector(400, CANVAS_HEIGHT/2, canvas);
+        reflector1 = new Reflector(CANVAS_WIDTH/2, 200, canvas);
+        reflector2 = new Reflector(100, CANVAS_HEIGHT/2, canvas);
+        reflector3 = new Reflector(CANVAS_WIDTH/2, 500, canvas);
+        reflector4 = new Reflector(400, CANVAS_HEIGHT/2, canvas);
     }
 
     public void updateBall() {
+        // if (!ball.updatePosition(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, canvas)) {
+        //     ball.updateCircleCollisionPosition(0.1, reflector);
+        // }
+        // } else {
+        //     ball.updatePosition(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, canvas);
+        // }
         ball.updatePosition(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, canvas);
+        ball.updateCircleCollisionPosition(0.1, reflectors);
     }
 
     public void moveFlippers() {

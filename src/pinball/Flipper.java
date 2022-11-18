@@ -9,7 +9,7 @@ public class Flipper {
     private Rectangle flipper;
     private boolean isPressed;
    
-    public Flipper(int x, int y, int angle, CanvasWindow canvas) {
+    public Flipper(double x, double y, double angle, CanvasWindow canvas) {
         flipper = new Rectangle(x, y, 70, 10);
         isPressed = false;
         flipper.setFillColor(Color.BLACK);
