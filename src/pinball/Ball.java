@@ -5,15 +5,19 @@ import java.util.List;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
+import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsObject;
+import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.Point;
 
 public class Ball {
     private Ellipse ball;
     public static final double GRAVITY = -9.8;
     private double x, y, dx, dy;
+    private GraphicsText pointCounter;
+    private double points;
 
-    public Ball(double x, double y, CanvasWindow canvas, double initialSpeed, double initialAngle) {
+    public Ball(double x, double y, CanvasWindow canvas, double initialSpeed, double initialAngle, GraphicsGroup pointsLayer) {
         this.x = x;
         this.y = y;
         ball = new Ellipse(x, y, 15, 15);
@@ -22,6 +26,9 @@ public class Ball {
         double initialAngleRadians = Math.toRadians(initialAngle);
         dx = initialSpeed * Math.cos(initialAngleRadians);
         dy = initialSpeed * Math.sin(initialAngleRadians) * -1;
+        pointCounter = new GraphicsText();
+        pointCounter.setPosition(400, 50);
+        pointsLayer.add(pointCounter);
     }
 
     public double getCenterX() {
@@ -34,6 +41,10 @@ public class Ball {
 
     public double getRadius() {
         return ball.getWidth()/2;
+    }
+
+    public Point getCenter() {
+        return ball.getCenter();
     }
 
     public boolean updatePosition(double dt, double maxX, double maxY, CanvasWindow canvas) {
@@ -82,16 +93,6 @@ public class Ball {
         double yDif = ballCenter.getY() - reflectorCenter.getY();
         double distanceSquared = xDif * xDif + yDif * yDif;
         boolean collision = distanceSquared <= (ball.getWidth()/2 + reflector.getRadius()) * (ball.getWidth()/2 + reflector.getRadius());
-        // double xDif = this.getCenterX() - reflector.getCenterX();
-        // double yDif = this.getCenterY() - reflector.getCenterY();
-        // double distanceSquared = xDif * xDif + yDif * yDif;
-        // boolean collision = distanceSquared <= (7.5 + 25) * (7.5 + 25); // radius of ball = 7.5, radius of reflector = 25
-        // double closestdistsq = Math.pow(this.getCenterX() - dx, 2) + Math.pow(this.getCenterY() - dy, 2);
-        // if (closestdistsq <= Math.pow(7.5 + 25, 2)) {
-        //     return true;
-        // } else {
-        //     return false;
-        // }
         return collision;
     }
 
@@ -102,6 +103,8 @@ public class Ball {
                 y += dy * dt;
                 ball.setPosition(x, y);
                 dy -= GRAVITY * dt;
+                points += 10;
+                pointCounter.setText("Points: " + points);
                 return true;
             }
         }

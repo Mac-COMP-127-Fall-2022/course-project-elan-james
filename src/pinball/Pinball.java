@@ -5,7 +5,6 @@ import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.events.Key;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class Pinball {
@@ -16,11 +15,12 @@ public class Pinball {
     private Flipper leftFlipper, rightFlipper;
     private Reflector reflector1, reflector2, reflector3, reflector4;
     private ArrayList<Reflector> reflectors = new ArrayList<>();
-    private GraphicsGroup reflectorGroup;
+    private GraphicsGroup pointsLayer;
     
     public Pinball() {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
-        reflectorGroup = new GraphicsGroup();
+        pointsLayer = new GraphicsGroup();
+        canvas.add(pointsLayer);
         createBall();
         createFlippers();
         createReflectors();
@@ -37,7 +37,7 @@ public class Pinball {
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -50);
+        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -50, pointsLayer);
     }
 
     public void createFlippers() {
@@ -53,30 +53,9 @@ public class Pinball {
     }
 
     public void updateBall() {
-        // if (!ball.updatePosition(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, canvas)) {
-        //     ball.updateCircleCollisionPosition(0.1, reflector);
-        // }
-        // } else {
-        //     ball.updatePosition(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, canvas);
-        // }
         ball.updatePosition(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, canvas);
         ball.updateCircleCollisionPosition(0.1, reflectors);
-        // updateCircleCollisionPosition();
     }
-
-    // public boolean updateCircleCollisionPosition() {
-    //     for (Reflector reflector : reflectors) {
-    //         double xDif = ball.getCenterX() - reflector.getCenterX();
-    //         double yDif = ball.getCenterY() - reflector.getCenterY();
-    //         double distanceSquared = xDif * xDif + yDif * yDif;
-    //         boolean collision = distanceSquared <= (ball.getRadius() + reflector.getRadius()) * (ball.getRadius() + reflector.getRadius()); // radius of ball = 7.5, radius of reflector = 25
-    //         if (collision) {
-    //             System.out.println("test2");
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
 
     public void moveFlippers() {
         Set<Key> keys = canvas.getKeysPressed();
