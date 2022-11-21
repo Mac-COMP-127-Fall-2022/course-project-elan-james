@@ -6,6 +6,7 @@ import java.util.List;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsObject;
+import edu.macalester.graphics.Point;
 
 public class Ball {
     private Ellipse ball;
@@ -31,16 +32,20 @@ public class Ball {
         return y + ball.getHeight()/2;
     }
 
+    public double getRadius() {
+        return ball.getWidth()/2;
+    }
+
     public boolean updatePosition(double dt, double maxX, double maxY, CanvasWindow canvas) {
         x += dx * dt;
         y += dy * dt;
-        // if (checkCollision(ball.getX(), ball.getY(), canvas)) {
-        //     dy = -dy;
-        //     y += dy * dt;
-        //     ball.setPosition(x, y);
-        //     dy -= GRAVITY * dt;
-        //     return true;
-        // }
+        if (checkCollision(ball.getX(), ball.getY(), canvas)) {
+            dy = -dy;
+            y += dy * dt;
+            ball.setPosition(x, y);
+            dy -= GRAVITY * dt;
+            return true;
+        }
         if ((x > 0 && x < maxX) && (y > 0 && y < maxY)) {
             ball.setPosition(x, y);
             dy -= GRAVITY * dt;
@@ -71,22 +76,35 @@ public class Ball {
     }
 
     public boolean checkCircleCollision(Ellipse ball, Reflector reflector) {
-        double xDif = this.getCenterX() - reflector.getCenterX();
-        double yDif = this.getCenterY() - reflector.getCenterY();
+        Point ballCenter = ball.getCenter();
+        Point reflectorCenter = reflector.getCenter();
+        double xDif = ballCenter.getX() - reflectorCenter.getX();
+        double yDif = ballCenter.getY() - reflectorCenter.getY();
         double distanceSquared = xDif * xDif + yDif * yDif;
-        boolean collision = distanceSquared <= (7.5 + 25) * (7.5 + 25); // radius of ball = 7.5, radius of reflector = 25
+        boolean collision = distanceSquared <= (ball.getWidth()/2 + reflector.getRadius()) * (ball.getWidth()/2 + reflector.getRadius());
+        // double xDif = this.getCenterX() - reflector.getCenterX();
+        // double yDif = this.getCenterY() - reflector.getCenterY();
+        // double distanceSquared = xDif * xDif + yDif * yDif;
+        // boolean collision = distanceSquared <= (7.5 + 25) * (7.5 + 25); // radius of ball = 7.5, radius of reflector = 25
+        // double closestdistsq = Math.pow(this.getCenterX() - dx, 2) + Math.pow(this.getCenterY() - dy, 2);
+        // if (closestdistsq <= Math.pow(7.5 + 25, 2)) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
         return collision;
     }
 
     public boolean updateCircleCollisionPosition(double dt, List<Reflector> reflectors) {
         for (Reflector reflector : reflectors) {
             if (checkCircleCollision(ball, reflector)) {
-                System.out.println("test");
+                dy = -dy;
+                y += dy * dt;
+                ball.setPosition(x, y);
+                dy -= GRAVITY * dt;
                 return true;
             }
         }
         return false;
     }
 }
-// search circle collision code tutorial
-// from velocity vector, need to find the line perpendicular to the velocity vector
