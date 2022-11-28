@@ -17,18 +17,19 @@ public class Ball {
     private GraphicsText pointCounter;
     private double points;
 
-    public Ball(double x, double y, CanvasWindow canvas, double initialSpeed, double initialAngle, GraphicsGroup pointsLayer) {
+    public Ball(double x, double y, CanvasWindow canvas, double initialSpeed, double initialAngle, GraphicsGroup pinballLayer) {
         this.x = x;
         this.y = y;
         ball = new Ellipse(x, y, 15, 15);
         ball.setFillColor(Color.BLACK);
-        canvas.add(ball);
+        pinballLayer.add(ball);
         double initialAngleRadians = Math.toRadians(initialAngle);
         dx = initialSpeed * Math.cos(initialAngleRadians);
         dy = initialSpeed * Math.sin(initialAngleRadians) * -1;
         pointCounter = new GraphicsText();
         pointCounter.setPosition(400, 50);
-        pointsLayer.add(pointCounter);
+        pointCounter.setText("Points: 0");
+        canvas.add(pointCounter);
     }
 
     public double getCenterX() {
@@ -47,10 +48,10 @@ public class Ball {
         return ball.getCenter();
     }
 
-    public boolean updatePosition(double dt, double maxX, double maxY, CanvasWindow canvas) {
+    public boolean updatePosition(double dt, double maxX, double maxY, GraphicsGroup pinballLayer) {
         x += dx * dt;
         y += dy * dt;
-        if (checkCollision(ball.getX(), ball.getY(), canvas)) {
+        if (checkCollision(ball.getX(), ball.getY(), pinballLayer)) {
             dy = -dy;
             y += dy * dt;
             ball.setPosition(x, y);
@@ -75,11 +76,11 @@ public class Ball {
         return false;
     }
 
-    public boolean checkCollision(double x, double y, CanvasWindow canvas) {
-        GraphicsObject point1 = canvas.getElementAt(x + (ball.getWidth()/2), y - 4);
-        GraphicsObject point2 = canvas.getElementAt(x - 4, y + (ball.getWidth()/2));
-        GraphicsObject point3 = canvas.getElementAt(x + (ball.getWidth()/2), y + ball.getWidth() + 4);
-        GraphicsObject point4 = canvas.getElementAt(x + ball.getWidth() + 4, y + (ball.getWidth()/2));
+    public boolean checkCollision(double x, double y, GraphicsGroup pinballLayer) {
+        GraphicsObject point1 = pinballLayer.getElementAt(x + (ball.getWidth()/2), y - 4);
+        GraphicsObject point2 = pinballLayer.getElementAt(x - 4, y + (ball.getWidth()/2));
+        GraphicsObject point3 = pinballLayer.getElementAt(x + (ball.getWidth()/2), y + ball.getWidth() + 4);
+        GraphicsObject point4 = pinballLayer.getElementAt(x + ball.getWidth() + 4, y + (ball.getWidth()/2));
         if (point1 != null || point2 != null || point3 != null || point4 != null) {
             return true;
         }

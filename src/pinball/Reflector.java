@@ -2,15 +2,16 @@ package pinball;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
+import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Point;
 
 public class Reflector {
     private Ellipse reflector;
     private double x, y;
 
-    public Reflector(double x, double y, CanvasWindow canvas) {
+    public Reflector(double x, double y, GraphicsGroup pinballLayer) {
         reflector = new Ellipse(x, y, 50, 50);
-        canvas.add(reflector);
+        pinballLayer.add(reflector);
     }
 
     public double getCenterX() {
