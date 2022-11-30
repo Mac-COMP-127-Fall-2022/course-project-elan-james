@@ -15,7 +15,7 @@ public class Pinball {
     private Flipper leftFlipper, rightFlipper;
     private Reflector reflector1, reflector2, reflector3, reflector4;
     private ArrayList<Reflector> reflectors = new ArrayList<>();
-    private Wall wall1, wall2, wall3, wall4, wall5, wall6, wall7;
+    private Wall wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8;
     private GraphicsGroup pinballLayer;
     
     public Pinball() {
@@ -25,15 +25,15 @@ public class Pinball {
         createBall();
         createFlippers();
         createReflectors();
-        createWalls();
+        // createWalls();
         reflectors.add(reflector1);
         reflectors.add(reflector2);
         reflectors.add(reflector3);
         reflectors.add(reflector4);
-        // canvas.animate(() -> {
-        //     updateBall();
-        //     moveFlippers();
-        // });
+        canvas.animate(() -> {
+            updateBall();
+            moveFlippers();
+        });
         moveFlippers();
         unPresssed();
     }
@@ -59,13 +59,14 @@ public class Pinball {
         wall2 = new Wall(80, 400, 80, 450, 10, pinballLayer);
         wall3 = new Wall(410, 455, 340, 530, 10, pinballLayer);
         wall4 = new Wall(415, 400, 415, 450, 10, pinballLayer);
-        wall5 = new Wall(40, 500, 110, 575, 10, pinballLayer);
-        wall6 = new Wall(455, 480, 385, 555, 10, pinballLayer);
-        wall7 = new Wall(455, 400, 455, 475, 10, pinballLayer);
+        wall5 = new Wall(0, 475, 200, 630, 10, pinballLayer);
+        wall6 = new Wall(455, 480, 295, 630, 10, pinballLayer);
+        wall7 = new Wall(455, 150, 455, 650, 10, pinballLayer);
+        wall8 = new Wall(400, 0, 500, 100, 10, pinballLayer);
     }
 
     public void updateBall() {
-        ball.updatePosition(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, pinballLayer);
+        ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, pinballLayer);
         ball.updateCircleCollisionPosition(0.1, reflectors);
     }
 
@@ -92,6 +93,10 @@ public class Pinball {
                 rightFlipper.movePaddleDown(30);
             }
         });
+    }
+
+    public void handleBallInteractions() {
+        ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, pinballLayer);
     }
 
     public static void main(String[] args) {
