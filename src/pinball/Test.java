@@ -28,7 +28,7 @@ public class Test {
 
     public void updateBall() {
         ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, pinballLayer);
-        ball.updateCircleCollisionPosition(0.1, reflectors);
+        // ball.updateCircleCollisionPosition(0.1, reflectors);
     }
 
     public static void main(String[] args) {

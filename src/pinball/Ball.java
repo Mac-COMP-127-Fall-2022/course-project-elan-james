@@ -33,11 +33,11 @@ public class Ball {
     }
 
     public double getX() {
-        return x;
+        return ball.getX();
     }
 
     public double getY() {
-        return y;
+        return ball.getY();
     }
 
     public double getCenterX() {
@@ -54,6 +54,10 @@ public class Ball {
 
     public Point getCenter() {
         return ball.getCenter();
+    }
+
+    private double getWidth() {
+        return ball.getWidth();
     }
 
     public boolean checkWallCollision(double dt, double maxX, double maxY, GraphicsGroup pinballLayer) {
@@ -77,22 +81,20 @@ public class Ball {
         return false;
     }
 
-    public boolean checkCollision(double dt, double x, double y, GraphicsGroup pinballLayer) {
+    public boolean checkCollision(double dt, GraphicsGroup pinballLayer) {
         GraphicsObject point1 = pinballLayer.getElementAt(x + (ball.getWidth()/2), y - 4);
         GraphicsObject point2 = pinballLayer.getElementAt(x - 4, y + (ball.getWidth()/2));
         GraphicsObject point3 = pinballLayer.getElementAt(x + (ball.getWidth()/2), y + ball.getWidth() + 4);
         GraphicsObject point4 = pinballLayer.getElementAt(x + ball.getWidth() + 4, y + (ball.getWidth()/2));
         if (point1 != null || point2 != null || point3 != null || point4 != null) {
-            dy = -dy;
-            y += dy * dt;
-            ball.setPosition(x, y);
-            dy -= GRAVITY * dt;
+            System.out.println("test2");
             return true;
         }
         return false;
     }
 
-    public boolean checkCircleCollision(Ellipse ball, Reflector reflector) {
+    public boolean checkCircleCollision(Ball ball, Reflector reflector) {
+        // for (Reflector reflector : reflectors) {
         Point ballCenter = ball.getCenter();
         Point reflectorCenter = reflector.getCenter();
         double xDif = ballCenter.getX() - reflectorCenter.getX();
@@ -100,20 +102,40 @@ public class Ball {
         double distanceSquared = xDif * xDif + yDif * yDif;
         boolean collision = distanceSquared <= (ball.getWidth()/2 + reflector.getRadius()) * (ball.getWidth()/2 + reflector.getRadius());
         return collision;
+        // }
+        // return false;
     }
 
-    public boolean updateCircleCollisionPosition(double dt, List<Reflector> reflectors) {
-        for (Reflector reflector : reflectors) {
-            if (checkCircleCollision(ball, reflector)) {
-                dy = -dy;
-                y += dy * dt;
-                ball.setPosition(x, y);
-                dy -= GRAVITY * dt;
-                points += 10;
-                pointCounter.setText("Points: " + points);
-                return true;
-            }
-        }
-        return false;
+    // public boolean updateCircleCollisionPosition(double dt, List<Reflector> reflectors) {
+    //     for (Reflector reflector : reflectors) {
+    //         if (checkCircleCollision(ball, reflector)) {
+    //             dy = -dy;
+    //             y += dy * dt;
+    //             ball.setPosition(x, y);
+    //             dy -= GRAVITY * dt;
+    //             points += 10;
+    //             pointCounter.setText("Points: " + points);
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+
+    public boolean updateCircleCollisionPosition(double dt) {
+        dy = -dy;
+        y += dy * dt;
+        ball.setPosition(x, y);
+        dy -= GRAVITY * dt;
+        points += 10;
+        pointCounter.setText("Points: " + points);
+        return true;
+    }
+
+    public boolean updateCollisionPosition(double dt) {
+        dy = -dy;
+        y += dy * dt;
+        ball.setPosition(x, y);
+        dy -= GRAVITY * dt;
+        return true;
     }
 }

@@ -31,7 +31,8 @@ public class Pinball {
         reflectors.add(reflector3);
         reflectors.add(reflector4);
         canvas.animate(() -> {
-            updateBall();
+            // updateBall();
+            handleBallInteractions();
             moveFlippers();
         });
         moveFlippers();
@@ -39,7 +40,7 @@ public class Pinball {
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -100, pinballLayer);
+        ball = new Ball(CANVAS_WIDTH/2, 400, canvas, 50, -70, pinballLayer);
     }
 
     public void createFlippers() {
@@ -67,7 +68,7 @@ public class Pinball {
 
     public void updateBall() {
         ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, pinballLayer);
-        ball.updateCircleCollisionPosition(0.1, reflectors);
+        // ball.updateCircleCollisionPosition(0.1, reflectors);
     }
 
     public void moveFlippers() {
@@ -97,6 +98,16 @@ public class Pinball {
 
     public void handleBallInteractions() {
         ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, pinballLayer);
+        for (Reflector reflector : reflectors) {
+            if (ball.checkCircleCollision(ball, reflector)) {
+                ball.updateCircleCollisionPosition(0.1);
+                System.out.println("test0");
+            } 
+        }
+        if (ball.checkCollision(0.1, pinballLayer)) {
+            ball.updateCollisionPosition(0.1);
+            System.out.println("test1");
+        }
     }
 
     public static void main(String[] args) {
