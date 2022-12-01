@@ -17,12 +17,12 @@ public class Ball {
     private GraphicsText pointCounter;
     private double points;
 
-    public Ball(double x, double y, CanvasWindow canvas, double initialSpeed, double initialAngle, GraphicsGroup pinballLayer) {
+    public Ball(double x, double y, CanvasWindow canvas, double initialSpeed, double initialAngle, GraphicsGroup rectangleLayer) {
         this.x = x;
         this.y = y;
         ball = new Ellipse(x, y, 15, 15);
         ball.setFillColor(Color.BLACK);
-        pinballLayer.add(ball);
+        rectangleLayer.add(ball);
         double initialAngleRadians = Math.toRadians(initialAngle);
         dx = initialSpeed * Math.cos(initialAngleRadians);
         dy = initialSpeed * Math.sin(initialAngleRadians) * -1;
@@ -60,14 +60,19 @@ public class Ball {
         return ball.getWidth();
     }
 
-    public boolean checkWallCollision(double dt, double maxX, double maxY, GraphicsGroup pinballLayer) {
+    public boolean moveBall(double dt, double maxX, double maxY) {
         x += dx * dt;
         y += dy * dt;
         if ((x > 0 && x < maxX) && (y > 0 && y < maxY)) {
             ball.setPosition(x, y);
             dy -= GRAVITY * dt;
             return true;
-        } else if (x <= 0 || x >= maxX) {
+        }
+        return false;
+    }
+
+    public boolean checkWallCollision(double dt, double maxX, double maxY) {
+        if (x <= 0 || x >= maxX) {
             dx = -dx;
             x += dx * dt;
             ball.setPosition(x, y);
@@ -81,13 +86,12 @@ public class Ball {
         return false;
     }
 
-    public boolean checkCollision(double dt, GraphicsGroup pinballLayer) {
-        GraphicsObject point1 = pinballLayer.getElementAt(x + (ball.getWidth()/2), y - 4);
-        GraphicsObject point2 = pinballLayer.getElementAt(x - 4, y + (ball.getWidth()/2));
-        GraphicsObject point3 = pinballLayer.getElementAt(x + (ball.getWidth()/2), y + ball.getWidth() + 4);
-        GraphicsObject point4 = pinballLayer.getElementAt(x + ball.getWidth() + 4, y + (ball.getWidth()/2));
+    public boolean checkCollision(double dt, GraphicsGroup rectangleLayer) {
+        GraphicsObject point1 = rectangleLayer.getElementAt(x + (ball.getWidth()/2), y - 4);
+        GraphicsObject point2 = rectangleLayer.getElementAt(x - 4, y + (ball.getWidth()/2));
+        GraphicsObject point3 = rectangleLayer.getElementAt(x + (ball.getWidth()/2), y + ball.getWidth() + 4);
+        GraphicsObject point4 = rectangleLayer.getElementAt(x + ball.getWidth() + 4, y + (ball.getWidth()/2));
         if (point1 != null || point2 != null || point3 != null || point4 != null) {
-            System.out.println("test2");
             return true;
         }
         return false;
@@ -104,6 +108,10 @@ public class Ball {
         return collision;
         // }
         // return false;
+    }
+
+    public boolean checkBlueWallCollision() {
+        return false;
     }
 
     // public boolean updateCircleCollisionPosition(double dt, List<Reflector> reflectors) {

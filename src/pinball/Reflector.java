@@ -9,9 +9,9 @@ public class Reflector {
     private Ellipse reflector;
     private double x, y;
 
-    public Reflector(double x, double y, GraphicsGroup pinballLayer) {
+    public Reflector(double x, double y, GraphicsGroup circleLayer) {
         reflector = new Ellipse(x, y, 50, 50);
-        pinballLayer.add(reflector);
+        circleLayer.add(reflector);
     }
 
     public double getCenterX() {

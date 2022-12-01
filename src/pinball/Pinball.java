@@ -16,16 +16,19 @@ public class Pinball {
     private Reflector reflector1, reflector2, reflector3, reflector4;
     private ArrayList<Reflector> reflectors = new ArrayList<>();
     private Wall wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8;
-    private GraphicsGroup pinballLayer;
+    private GraphicsGroup rectangleLayer;
+    private GraphicsGroup circleLayer;
     
     public Pinball() {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
-        pinballLayer = new GraphicsGroup();
-        canvas.add(pinballLayer);
+        rectangleLayer = new GraphicsGroup();
+        circleLayer = new GraphicsGroup();
+        canvas.add(rectangleLayer);
+        canvas.add(circleLayer);
         createBall();
         createFlippers();
         createReflectors();
-        // createWalls();
+        createWalls();
         reflectors.add(reflector1);
         reflectors.add(reflector2);
         reflectors.add(reflector3);
@@ -40,34 +43,34 @@ public class Pinball {
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, 400, canvas, 50, -70, pinballLayer);
+        ball = new Ball(CANVAS_WIDTH/2, 400, canvas, 50, -70, rectangleLayer);
     }
 
     public void createFlippers() {
-        leftFlipper = new Flipper(150, 550, 40, pinballLayer);
-        rightFlipper = new Flipper(275, 550, 140, pinballLayer);
+        leftFlipper = new Flipper(150, 550, 40, rectangleLayer);
+        rightFlipper = new Flipper(275, 550, 140, rectangleLayer);
     }
 
     public void createReflectors() {
-        reflector1 = new Reflector(225, 150, pinballLayer);
-        reflector2 = new Reflector(75, 250, pinballLayer);
-        reflector3 = new Reflector(225, 350, pinballLayer);
-        reflector4 = new Reflector(375, 250, pinballLayer);
+        reflector1 = new Reflector(225, 150, circleLayer);
+        reflector2 = new Reflector(75, 250, circleLayer);
+        reflector3 = new Reflector(225, 350, circleLayer);
+        reflector4 = new Reflector(375, 250, circleLayer);
     }
 
     public void createWalls() {
-        wall1 = new Wall(85, 455, 155, 530, 10, pinballLayer);
-        wall2 = new Wall(80, 400, 80, 450, 10, pinballLayer);
-        wall3 = new Wall(410, 455, 340, 530, 10, pinballLayer);
-        wall4 = new Wall(415, 400, 415, 450, 10, pinballLayer);
-        wall5 = new Wall(0, 475, 200, 630, 10, pinballLayer);
-        wall6 = new Wall(455, 480, 295, 630, 10, pinballLayer);
-        wall7 = new Wall(455, 150, 455, 650, 10, pinballLayer);
-        wall8 = new Wall(400, 0, 500, 100, 10, pinballLayer);
+        wall1 = new Wall(85, 455, 155, 530, 10, rectangleLayer);
+        wall2 = new Wall(80, 400, 80, 450, 10, rectangleLayer);
+        wall3 = new Wall(410, 455, 340, 530, 10, rectangleLayer);
+        wall4 = new Wall(415, 400, 415, 450, 10, rectangleLayer);
+        wall5 = new Wall(0, 475, 200, 630, 10, rectangleLayer);
+        wall6 = new Wall(455, 480, 295, 630, 10, rectangleLayer);
+        wall7 = new Wall(455, 150, 455, 650, 10, rectangleLayer);
+        wall8 = new Wall(400, 0, 500, 100, 10, rectangleLayer);
     }
 
     public void updateBall() {
-        ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, pinballLayer);
+        ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
         // ball.updateCircleCollisionPosition(0.1, reflectors);
     }
 
@@ -97,16 +100,15 @@ public class Pinball {
     }
 
     public void handleBallInteractions() {
-        ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT, pinballLayer);
+        ball.moveBall(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
         for (Reflector reflector : reflectors) {
             if (ball.checkCircleCollision(ball, reflector)) {
                 ball.updateCircleCollisionPosition(0.1);
-                System.out.println("test0");
             } 
         }
-        if (ball.checkCollision(0.1, pinballLayer)) {
+        if (ball.checkCollision(0.1, rectangleLayer)) {
             ball.updateCollisionPosition(0.1);
-            System.out.println("test1");
         }
     }
 

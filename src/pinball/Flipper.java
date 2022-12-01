@@ -13,12 +13,12 @@ public class Flipper {
     private Path flipper1;
     private boolean isPressed;
    
-    public Flipper(double x, double y, double angle, GraphicsGroup pinballLayer) {
+    public Flipper(double x, double y, double angle, GraphicsGroup rectangleLayer) {
         flipper = new Rectangle(x, y, 70, 10);
         isPressed = false;
         flipper.setFillColor(Color.BLACK);
         flipper.rotateBy(angle);
-        pinballLayer.add(flipper);
+        rectangleLayer.add(flipper);
 
         // flipper1 = new Path(new Point(150, 550), new Point(200, 575), new Point(205, 580), new Point(205, 580));
         // pinballLayer.add(flipper1);
