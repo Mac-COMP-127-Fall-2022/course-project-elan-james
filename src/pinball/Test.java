@@ -27,7 +27,7 @@ public class Test {
     }
 
     public void updateBall() {
-        ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ball.checkCanvasWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
         // ball.updateCircleCollisionPosition(0.1, reflectors);
     }
 

@@ -16,6 +16,7 @@ public class Pinball {
     private Reflector reflector1, reflector2, reflector3, reflector4;
     private ArrayList<Reflector> reflectors = new ArrayList<>();
     private Wall wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8;
+    private Spring spring;
     private GraphicsGroup rectangleLayer;
     private GraphicsGroup circleLayer;
     
@@ -29,6 +30,7 @@ public class Pinball {
         createFlippers();
         createReflectors();
         createWalls();
+        // createSpring();
         reflectors.add(reflector1);
         reflectors.add(reflector2);
         reflectors.add(reflector3);
@@ -39,6 +41,7 @@ public class Pinball {
             moveFlippers();
         });
         moveFlippers();
+        // moveSpring();
         unPresssed();
     }
 
@@ -69,8 +72,12 @@ public class Pinball {
         wall8 = new Wall(400, 0, 500, 100, 10, rectangleLayer);
     }
 
+    public void createSpring() {
+        spring = new Spring(rectangleLayer);
+    }
+
     public void updateBall() {
-        ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ball.checkCanvasWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
         // ball.updateCircleCollisionPosition(0.1, reflectors);
     }
 
@@ -101,7 +108,7 @@ public class Pinball {
 
     public void handleBallInteractions() {
         ball.moveBall(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
-        ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ball.checkCanvasWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
         for (Reflector reflector : reflectors) {
             if (ball.checkCircleCollision(ball, reflector)) {
                 ball.updateCircleCollisionPosition(0.1);
@@ -110,6 +117,10 @@ public class Pinball {
         if (ball.checkCollision(0.1, rectangleLayer)) {
             ball.updateCollisionPosition(0.1);
         }
+    }
+
+    public void moveSpring() {
+        canvas.onDrag(event -> spring.updatePosition(event.getPosition().getY()));
     }
 
     public static void main(String[] args) {
