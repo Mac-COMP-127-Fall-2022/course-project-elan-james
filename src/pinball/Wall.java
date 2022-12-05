@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Line;
+import edu.macalester.graphics.Point;
 
 public class Wall {
     private Line wall;
@@ -14,5 +15,9 @@ public class Wall {
         wall.setStrokeWidth(width);
         wall.setStrokeColor(Color.BLUE);
         rectangleLayer.add(wall);
+    }
+
+    public Point getPosition() {
+        return wall.getPosition();
     }
 }

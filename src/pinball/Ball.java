@@ -71,7 +71,7 @@ public class Ball {
         return false;
     }
 
-    public boolean checkWallCollision(double dt, double maxX, double maxY) {
+    public boolean checkCanvasWallCollision(double dt, double maxX, double maxY) {
         if (x <= 0 || x >= maxX) {
             dx = -dx;
             x += dx * dt;
@@ -110,8 +110,8 @@ public class Ball {
         // return false;
     }
 
-    public boolean checkBlueWallCollision() {
-        return false;
+    public boolean checkWallCollision(Wall wall) {
+        return false; 
     }
 
     // public boolean updateCircleCollisionPosition(double dt, List<Reflector> reflectors) {
