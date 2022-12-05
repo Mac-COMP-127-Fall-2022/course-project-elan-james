@@ -104,7 +104,7 @@ public class Pinball {
         ball.checkWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
         for (Reflector reflector : reflectors) {
             if (ball.checkCircleCollision(ball, reflector)) {
-                ball.updateCircleCollisionPosition(0.1);
+                ball.updateCircleCollisionPosition(0.1, reflector);
             } 
         }
         if (ball.checkCollision(0.1, rectangleLayer)) {

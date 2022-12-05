@@ -2,7 +2,7 @@ package pinball;
 
 import java.awt.Color;
 import java.util.List;
-
+import java.lang.Math;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsGroup;
@@ -129,13 +129,28 @@ public class Ball {
     //     return false;
     // }
 
-    public boolean updateCircleCollisionPosition(double dt) {
-        dy = -dy;
-        y += dy * dt;
-        ball.setPosition(x, y);
-        dy -= GRAVITY * dt;
-        points += 10;
-        pointCounter.setText("Points: " + points);
+    public boolean updateCircleCollisionPosition(double dt, Reflector ref) {
+        while ()
+        Point ballCenterPoint = ball.getCenter();
+        Point pointBallWouldReach = new Point(ball.getCenter().getX() + dx, ball.getCenter().getY() + dy);
+        double diffBetweenX = ball.getCenter().getX() - ref.getCenterX();
+        double diffBetweenY = ball.getCenter().getY() - ref.getCenterY();
+        double angleBetweenBallsCenters = Math.atan2(diffBetweenX, diffBetweenY);
+        double bounceVelocity = Math.sqrt(dx*dx + dy*dy + 0);
+        Point targetPoint = new Point(
+            pointBallWouldReach.getX() -(bounceVelocity * Math.cos(angleBetweenBallsCenters)),
+            pointBallWouldReach.getY() - (bounceVelocity * Math.sin(angleBetweenBallsCenters)));
+        double diffXToTarget = ball.getCenter().getX() - targetPoint.getX();
+        double diffYToTarget = ball.getCenter().getY() - targetPoint.getY();
+        dx = bounceVelocity * Math.cos(diffYToTarget/diffXToTarget); 
+        dy = bounceVelocity * Math.sin(diffYToTarget/diffXToTarget);  
+        this.moveBall(.03, dx, dy);  
+        // dy = -dy;
+        // y += dy * dt;
+        // ball.setPosition(x, y);
+        // dy -= GRAVITY * dt;
+        // points += 10;
+        // pointCounter.setText("Points: " + points);
         return true;
     }
 
