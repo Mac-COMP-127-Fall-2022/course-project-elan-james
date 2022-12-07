@@ -5,6 +5,8 @@ import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.events.Key;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class Pinball {
@@ -16,6 +18,7 @@ public class Pinball {
     private Reflector reflector1, reflector2, reflector3, reflector4;
     private ArrayList<Reflector> reflectors = new ArrayList<>();
     private Wall wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8;
+    private List<Wall> walls = Arrays.asList(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8);
     private Spring spring;
     private GraphicsGroup rectangleLayer;
     private GraphicsGroup circleLayer;
@@ -63,6 +66,7 @@ public class Pinball {
 
     public void createWalls() {
         wall1 = new Wall(85, 455, 155, 530, 10, rectangleLayer);
+        // wall1 = new Wall(85, 455, 0, 0, 70, rectangleLayer);
         wall2 = new Wall(80, 400, 80, 450, 10, rectangleLayer);
         wall3 = new Wall(410, 455, 340, 530, 10, rectangleLayer);
         wall4 = new Wall(415, 400, 415, 450, 10, rectangleLayer);

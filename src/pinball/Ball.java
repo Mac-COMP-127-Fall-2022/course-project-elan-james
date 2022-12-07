@@ -1,6 +1,7 @@
 package pinball;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.List;
 import java.lang.Math;
 import edu.macalester.graphics.CanvasWindow;
@@ -27,7 +28,7 @@ public class Ball {
         dx = initialSpeed * Math.cos(initialAngleRadians);
         dy = initialSpeed * Math.sin(initialAngleRadians) * -1;
         pointCounter = new GraphicsText();
-        pointCounter.setPosition(400, 50);
+        pointCounter.setPosition(10, 20);
         pointCounter.setText("Points: 0");
         canvas.add(pointCounter);
     }
@@ -98,7 +99,6 @@ public class Ball {
     }
 
     public boolean checkCircleCollision(Ball ball, Reflector reflector) {
-        // for (Reflector reflector : reflectors) {
         Point ballCenter = ball.getCenter();
         Point reflectorCenter = reflector.getCenter();
         double xDif = ballCenter.getX() - reflectorCenter.getX();
@@ -106,51 +106,20 @@ public class Ball {
         double distanceSquared = xDif * xDif + yDif * yDif;
         boolean collision = distanceSquared <= (ball.getWidth()/2 + reflector.getRadius()) * (ball.getWidth()/2 + reflector.getRadius());
         return collision;
-        // }
-        // return false;
     }
-
-    public boolean checkWallCollision(Wall wall) {
-        return false; 
-    }
-
-    // public boolean updateCircleCollisionPosition(double dt, List<Reflector> reflectors) {
-    //     for (Reflector reflector : reflectors) {
-    //         if (checkCircleCollision(ball, reflector)) {
-    //             dy = -dy;
-    //             y += dy * dt;
-    //             ball.setPosition(x, y);
-    //             dy -= GRAVITY * dt;
-    //             points += 10;
-    //             pointCounter.setText("Points: " + points);
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
 
     public boolean updateCircleCollisionPosition(double dt, Reflector ref) {
-        while ()
-        Point ballCenterPoint = ball.getCenter();
-        Point pointBallWouldReach = new Point(ball.getCenter().getX() + dx, ball.getCenter().getY() + dy);
-        double diffBetweenX = ball.getCenter().getX() - ref.getCenterX();
-        double diffBetweenY = ball.getCenter().getY() - ref.getCenterY();
-        double angleBetweenBallsCenters = Math.atan2(diffBetweenX, diffBetweenY);
-        double bounceVelocity = Math.sqrt(dx*dx + dy*dy + 0);
-        Point targetPoint = new Point(
-            pointBallWouldReach.getX() -(bounceVelocity * Math.cos(angleBetweenBallsCenters)),
-            pointBallWouldReach.getY() - (bounceVelocity * Math.sin(angleBetweenBallsCenters)));
-        double diffXToTarget = ball.getCenter().getX() - targetPoint.getX();
-        double diffYToTarget = ball.getCenter().getY() - targetPoint.getY();
-        dx = bounceVelocity * Math.cos(diffYToTarget/diffXToTarget); 
-        dy = bounceVelocity * Math.sin(diffYToTarget/diffXToTarget);  
-        this.moveBall(.03, dx, dy);  
-        // dy = -dy;
-        // y += dy * dt;
-        // ball.setPosition(x, y);
-        // dy -= GRAVITY * dt;
-        // points += 10;
-        // pointCounter.setText("Points: " + points);
+        double diffBetweenX = ball.getCenter().getX() - ref.getCenter().getX();
+        double diffBetweenY = ball.getCenter().getY() - ref.getCenter().getY();
+        Point ballVelocity = new Point(dx, dy);
+        Point centerDiff = new Point(diffBetweenX, diffBetweenY);
+        centerDiff = centerDiff.scale(1 / centerDiff.magnitude());
+        double dotProduct = centerDiff.getX() * ballVelocity.getX() + centerDiff.getY() * ballVelocity.getY();
+        Point newVelocity = ballVelocity.subtract(centerDiff.scale(dotProduct * 2));
+        dx = newVelocity.getX();
+        dy = newVelocity.getY();
+        points += 10;
+        pointCounter.setText("Points: " + points);
         return true;
     }
 
