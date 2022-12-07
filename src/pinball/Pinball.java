@@ -2,6 +2,7 @@ package pinball;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
+import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.events.Key;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class Pinball {
     private Spring spring;
     private GraphicsGroup rectangleLayer;
     private GraphicsGroup circleLayer;
+    private Points points;
     
     public Pinball() {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -34,6 +36,7 @@ public class Pinball {
         createReflectors();
         createWalls();
         // createSpring();
+        createPoints();
         reflectors.add(reflector1);
         reflectors.add(reflector2);
         reflectors.add(reflector3);
@@ -80,6 +83,10 @@ public class Pinball {
         spring = new Spring(rectangleLayer);
     }
 
+    public void createPoints() {
+        points = new Points(canvas);
+    }
+
     public void updateBall() {
         ball.checkCanvasWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
         // ball.updateCircleCollisionPosition(0.1, reflectors);
@@ -116,6 +123,7 @@ public class Pinball {
         for (Reflector reflector : reflectors) {
             if (ball.checkCircleCollision(ball, reflector)) {
                 ball.updateCircleCollisionPosition(0.1, reflector);
+                points.addPoints(10);
             } 
         }
         if (ball.checkCollision(0.1, rectangleLayer)) {

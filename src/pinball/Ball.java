@@ -15,8 +15,6 @@ public class Ball {
     private Ellipse ball;
     public static final double GRAVITY = -9.8;
     private double x, y, dx, dy;
-    private GraphicsText pointCounter;
-    private double points;
 
     public Ball(double x, double y, CanvasWindow canvas, double initialSpeed, double initialAngle, GraphicsGroup rectangleLayer) {
         this.x = x;
@@ -27,10 +25,6 @@ public class Ball {
         double initialAngleRadians = Math.toRadians(initialAngle);
         dx = initialSpeed * Math.cos(initialAngleRadians);
         dy = initialSpeed * Math.sin(initialAngleRadians) * -1;
-        pointCounter = new GraphicsText();
-        pointCounter.setPosition(10, 20);
-        pointCounter.setText("Points: 0");
-        canvas.add(pointCounter);
     }
 
     public double getX() {
@@ -118,8 +112,6 @@ public class Ball {
         Point newVelocity = ballVelocity.subtract(centerDiff.scale(dotProduct * 2));
         dx = newVelocity.getX();
         dy = newVelocity.getY();
-        points += 10;
-        pointCounter.setText("Points: " + points);
         return true;
     }
 
