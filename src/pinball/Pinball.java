@@ -20,7 +20,7 @@ public class Pinball {
     private Reflector reflector1, reflector2, reflector3, reflector4;
     private ArrayList<Reflector> reflectors = new ArrayList<>();
     private Wall wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8;
-    private List<Wall> walls = Arrays.asList(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8);
+    private List<Wall> walls;
     private Spring spring;
     private GraphicsGroup rectangleLayer;
     private GraphicsGroup circleLayer;
@@ -68,15 +68,16 @@ public class Pinball {
     }
 
     public void createWalls() {
-        wall1 = new Wall(85, 455, 155, 530, 10, rectangleLayer);
-        // wall1 = new Wall(85, 455, 0, 0, 70, rectangleLayer);
-        wall2 = new Wall(80, 400, 80, 450, 10, rectangleLayer);
-        wall3 = new Wall(410, 455, 340, 530, 10, rectangleLayer);
-        wall4 = new Wall(415, 400, 415, 450, 10, rectangleLayer);
-        wall5 = new Wall(0, 475, 200, 630, 10, rectangleLayer);
-        wall6 = new Wall(455, 480, 295, 630, 10, rectangleLayer);
-        wall7 = new Wall(455, 150, 455, 650, 10, rectangleLayer);
-        wall8 = new Wall(400, 0, 500, 100, 10, rectangleLayer);
+        wall1 = new Wall(85, 455, 155, 530, 10, canvas);
+        // wall1 = new Wall(85, 455, 0, 0, 70, canvas);
+        wall2 = new Wall(80, 400, 80, 450, 10, canvas);
+        wall3 = new Wall(410, 455, 340, 530, 10, canvas);
+        wall4 = new Wall(415, 400, 415, 450, 10, canvas);
+        wall5 = new Wall(0, 475, 200, 630, 10, canvas);
+        wall6 = new Wall(455, 480, 295, 630, 10, canvas);
+        wall7 = new Wall(455, 150, 455, 650, 10, canvas);
+        wall8 = new Wall(400, 0, 500, 100, 10, canvas);
+        walls = Arrays.asList(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8);
     }
 
     public void createSpring() {
@@ -117,13 +118,14 @@ public class Pinball {
         ball.checkCanvasWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
         for (Reflector reflector : reflectors) {
             if (ball.checkCircleCollision(ball, reflector)) {
-                ball.updateCircleCollisionPosition(0.1, reflector);
+                ball.updateCircleCollisionPosition(reflector.getCenter().getX(), reflector.getCenter().getY());
                 points.addPoints(10);
             } 
         }
         if (ball.checkCollision(0.1, rectangleLayer)) {
             ball.updateCollisionPosition(0.1);
         }
+        ball.checkWallCollision(walls);
         // belowFlippers();
     }
 

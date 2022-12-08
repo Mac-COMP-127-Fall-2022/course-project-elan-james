@@ -101,9 +101,9 @@ public class Ball {
         return collision;
     }
 
-    public boolean updateCircleCollisionPosition(double dt, Reflector ref) {
-        double diffBetweenX = ball.getCenter().getX() - ref.getCenter().getX();
-        double diffBetweenY = ball.getCenter().getY() - ref.getCenter().getY();
+    public boolean updateCircleCollisionPosition(double x, double y) {
+        double diffBetweenX = ball.getCenter().getX() - x;
+        double diffBetweenY = ball.getCenter().getY() - y;
         Point ballVelocity = new Point(dx, dy);
         Point centerDiff = new Point(diffBetweenX, diffBetweenY);
         centerDiff = centerDiff.scale(1 / centerDiff.magnitude());
@@ -112,6 +112,50 @@ public class Ball {
         dx = newVelocity.getX();
         dy = newVelocity.getY();
         return true;
+    }
+
+    public boolean checkWallCollision(List<Wall> walls) {
+        for (Wall wall : walls) {
+            double slope = wall.getY1() - wall.getY2() / wall.getX1() - wall.getX2();
+            double normalSlope = -(1 / slope);
+            if (normalSlope > 9999999 || normalSlope < -999999) {
+                break;
+            }
+            double x = 0;
+            double y = normalSlope * (-ball.getCenter().getX()) + ball.getCenter().getY();
+            Point intersectionPoint = getIntersection(ball.getCenter(), new Point(x, y), wall.getCenter1(), wall.getCenter2());
+            if (checkPointWithinLine(new Point(wall.getX1(), wall.getY1()), new Point(wall.getX2(), wall.getY2()), intersectionPoint) && ball.getWidth()/2 + wall.getWidth() > Math.hypot(ball.getCenter().getX() - intersectionPoint.getX(), ball.getCenter().getY() - intersectionPoint.getY())) {
+                updateCircleCollisionPosition(intersectionPoint.getX(), intersectionPoint.getY());
+                
+                break;
+            }
+        }
+        return false;
+    }
+
+    public Point getIntersection(Point line1_1, Point line1_2, Point line2_1, Point line2_2) {
+        double line1A = line1_2.getY() - line1_1.getY();
+        double line1B = line1_1.getX() - line1_2.getX();
+        double line1C = line1A * line1_1.getX() + line1B * line1_1.getY();
+
+        double line2A = line2_2.getY() - line2_1.getY();
+        double line2B = line2_1.getX() - line2_2.getX();
+        double line2C = line2A * line2_1.getX() + line2B * line2_1.getY();
+
+        double det = line1A * line2B - line2A * line1B;
+        double x = (line2B * line1C - line1B * line2C) / det;
+        double y = (line1A * line2C - line2A * line1C) / det;
+        return new Point(x, y);
+    }
+
+    public boolean checkPointWithinLine(Point startPoint, Point endPoint, Point point) {
+        double minX = Math.min(startPoint.getX(), endPoint.getX());
+        double minY = Math.min(startPoint.getY(), endPoint.getY());
+
+        double maxX = Math.max(startPoint.getX(), endPoint.getX());
+        double maxY = Math.max(startPoint.getY(), endPoint.getY());
+
+        return point.getX() >= minX && point.getX() <= maxX && point.getY() >= minY && point.getY() <= maxY;
     }
 
     public boolean updateCollisionPosition(double dt) {

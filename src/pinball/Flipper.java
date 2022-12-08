@@ -2,7 +2,6 @@ package pinball;
 
 import java.awt.Color;
 
-import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Path;
 import edu.macalester.graphics.Point;
