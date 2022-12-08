@@ -1,6 +1,7 @@
 package pinball;
 
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.FontStyle;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.events.Key;
@@ -24,6 +25,7 @@ public class Pinball {
     private GraphicsGroup rectangleLayer;
     private GraphicsGroup circleLayer;
     private Points points;
+    private int lives = 3;
     
     public Pinball() {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -42,17 +44,15 @@ public class Pinball {
         reflectors.add(reflector3);
         reflectors.add(reflector4);
         canvas.animate(() -> {
-            // updateBall();
             handleBallInteractions();
             moveFlippers();
         });
-        moveFlippers();
         // moveSpring();
         unPresssed();
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, 400, canvas, 50, -70, rectangleLayer);
+        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -70, rectangleLayer);
     }
 
     public void createFlippers() {
@@ -85,11 +85,6 @@ public class Pinball {
 
     public void createPoints() {
         points = new Points(canvas);
-    }
-
-    public void updateBall() {
-        ball.checkCanvasWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
-        // ball.updateCircleCollisionPosition(0.1, reflectors);
     }
 
     public void moveFlippers() {
@@ -129,10 +124,39 @@ public class Pinball {
         if (ball.checkCollision(0.1, rectangleLayer)) {
             ball.updateCollisionPosition(0.1);
         }
+        // belowFlippers();
     }
 
     public void moveSpring() {
         canvas.onDrag(event -> spring.updatePosition(event.getPosition().getY()));
+    }
+
+    public void belowFlippers() {
+        if (ball.getCenterY() > 600) {
+            lives --;
+            if (lives == 0) {
+                GraphicsText lose = new GraphicsText("You Lost");
+                lose.setPosition(140, 325);
+                lose.setFont(FontStyle.BOLD, 50);
+                canvas.add(lose);
+                canvas.draw();
+                canvas.pause(10000);
+                canvas.closeWindow();
+            }
+            reset();
+        }
+    }
+
+    public void reset() {
+        ball.resetBall(rectangleLayer);
+        createBall();
+        GraphicsText livesLeft = new GraphicsText("You have " + lives + " lives left");
+        livesLeft.setPosition(40, 325);
+        livesLeft.setFont(FontStyle.BOLD, 40);
+        canvas.add(livesLeft);
+        canvas.draw();
+        canvas.pause(3000);
+        canvas.remove(livesLeft);
     }
 
     public static void main(String[] args) {

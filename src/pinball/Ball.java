@@ -8,7 +8,6 @@ import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsObject;
-import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.Point;
 
 public class Ball {
@@ -121,5 +120,9 @@ public class Ball {
         ball.setPosition(x, y);
         dy -= GRAVITY * dt;
         return true;
+    }
+
+    public void resetBall(GraphicsGroup rectangleLayer) {
+        rectangleLayer.remove(ball);
     }
 }
