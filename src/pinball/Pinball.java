@@ -6,7 +6,6 @@ import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.events.Key;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -17,8 +16,8 @@ public class Pinball {
     private CanvasWindow canvas;
     private Ball ball;
     private Flipper leftFlipper, rightFlipper;
-    private Reflector reflector1, reflector2, reflector3, reflector4;
-    private ArrayList<Reflector> reflectors = new ArrayList<>();
+    private Reflector reflector1, reflector2, reflector3, reflector4, reflector5;
+    private List<Reflector> reflectors;
     private Wall wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8;
     private List<Wall> walls;
     private Spring spring;
@@ -39,10 +38,6 @@ public class Pinball {
         createWalls();
         // createSpring();
         createPoints();
-        reflectors.add(reflector1);
-        reflectors.add(reflector2);
-        reflectors.add(reflector3);
-        reflectors.add(reflector4);
         canvas.animate(() -> {
             handleBallInteractions();
             moveFlippers();
@@ -52,7 +47,7 @@ public class Pinball {
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -70, rectangleLayer);
+        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -60, rectangleLayer);
     }
 
     public void createFlippers() {
@@ -65,6 +60,8 @@ public class Pinball {
         reflector2 = new Reflector(75, 250, circleLayer);
         reflector3 = new Reflector(225, 350, circleLayer);
         reflector4 = new Reflector(375, 250, circleLayer);
+        // reflector5 = new Reflector(25, 50, circleLayer);
+        reflectors = Arrays.asList(reflector1, reflector2, reflector3, reflector4);
     }
 
     public void createWalls() {
@@ -119,7 +116,11 @@ public class Pinball {
         for (Reflector reflector : reflectors) {
             if (ball.checkCircleCollision(ball, reflector)) {
                 ball.updateCircleCollisionPosition(reflector.getCenter().getX(), reflector.getCenter().getY());
-                points.addPoints(10);
+                if (ball.getCenter().getY() < 100) {
+                    points.addPoints(20);
+                } else {
+                    points.addPoints(10);
+                }
             } 
         }
         if (ball.checkCollision(0.1, rectangleLayer)) {
@@ -137,10 +138,14 @@ public class Pinball {
         if (ball.getCenterY() > 600) {
             lives --;
             if (lives == 0) {
-                GraphicsText lose = new GraphicsText("You Lost");
-                lose.setPosition(140, 325);
+                GraphicsText lose = new GraphicsText("No more lives left");
+                GraphicsText pointTotal = new GraphicsText("You ended with " + points.getPoints() + " points!");
+                lose.setPosition(20, 250);
                 lose.setFont(FontStyle.BOLD, 50);
+                pointTotal.setPosition(40, 330);
+                pointTotal.setFont(FontStyle.BOLD, 30);
                 canvas.add(lose);
+                canvas.add(pointTotal);
                 canvas.draw();
                 canvas.pause(10000);
                 canvas.closeWindow();

@@ -14,6 +14,10 @@ public class Points {
         canvas.add(pointCounter);
     }
 
+    public double getPoints() {
+        return points;
+    }
+
     public void addPoints(double num) {
         points += num;
         pointCounter.setText("Points: " + points);

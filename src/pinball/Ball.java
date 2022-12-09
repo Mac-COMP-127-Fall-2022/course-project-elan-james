@@ -126,7 +126,6 @@ public class Ball {
             Point intersectionPoint = getIntersection(ball.getCenter(), new Point(x, y), wall.getCenter1(), wall.getCenter2());
             if (checkPointWithinLine(new Point(wall.getX1(), wall.getY1()), new Point(wall.getX2(), wall.getY2()), intersectionPoint) && ball.getWidth()/2 + wall.getWidth() > Math.hypot(ball.getCenter().getX() - intersectionPoint.getX(), ball.getCenter().getY() - intersectionPoint.getY())) {
                 updateCircleCollisionPosition(intersectionPoint.getX(), intersectionPoint.getY());
-                
                 break;
             }
         }
