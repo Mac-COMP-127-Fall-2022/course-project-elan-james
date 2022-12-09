@@ -56,24 +56,28 @@ public class Pinball {
     }
 
     public void createReflectors() {
-        reflector1 = new Reflector(225, 150, circleLayer);
-        reflector2 = new Reflector(75, 250, circleLayer);
-        reflector3 = new Reflector(225, 350, circleLayer);
-        reflector4 = new Reflector(375, 250, circleLayer);
+        reflector1 = new Reflector(225, 150);
+        reflector2 = new Reflector(75, 250);
+        reflector3 = new Reflector(225, 350);
+        reflector4 = new Reflector(375, 250);
+        circleLayer.add(reflector1.getGraphics());
+        circleLayer.add(reflector2.getGraphics());
+        circleLayer.add(reflector3.getGraphics());
+        circleLayer.add(reflector4.getGraphics());
         // reflector5 = new Reflector(25, 50, circleLayer);
         reflectors = Arrays.asList(reflector1, reflector2, reflector3, reflector4);
     }
 
     public void createWalls() {
-        wall1 = new Wall(85, 455, 155, 530, 10, canvas);
-        // wall1 = new Wall(85, 455, 0, 0, 70, canvas);
-        wall2 = new Wall(80, 400, 80, 450, 10, canvas);
-        wall3 = new Wall(410, 455, 340, 530, 10, canvas);
-        wall4 = new Wall(415, 400, 415, 450, 10, canvas);
-        wall5 = new Wall(0, 475, 200, 630, 10, canvas);
-        wall6 = new Wall(455, 480, 295, 630, 10, canvas);
-        wall7 = new Wall(455, 150, 455, 650, 10, canvas);
-        wall8 = new Wall(400, 0, 500, 100, 10, canvas);
+        wall1 = new Wall(85, 455, 155, 530, 10, rectangleLayer);
+        // wall1 = new Wall(85, 455, 0, 0, 70, rectangleLayer);
+        wall2 = new Wall(80, 400, 80, 450, 10, rectangleLayer);
+        wall3 = new Wall(410, 455, 340, 530, 10, rectangleLayer);
+        wall4 = new Wall(415, 400, 415, 450, 10, rectangleLayer);
+        wall5 = new Wall(0, 475, 200, 630, 10, rectangleLayer);
+        wall6 = new Wall(455, 480, 295, 630, 10, rectangleLayer);
+        wall7 = new Wall(455, 150, 455, 650, 10, rectangleLayer);
+        wall8 = new Wall(400, 0, 500, 100, 10, rectangleLayer);
         walls = Arrays.asList(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8);
     }
 
@@ -114,8 +118,7 @@ public class Pinball {
         ball.moveBall(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
         ball.checkCanvasWallCollision(0.1, CANVAS_WIDTH, CANVAS_HEIGHT);
         for (Reflector reflector : reflectors) {
-            if (ball.checkCircleCollision(ball, reflector)) {
-                ball.updateCircleCollisionPosition(reflector.getCenter().getX(), reflector.getCenter().getY());
+            if (ball.bounceOffReflector(reflector)) {
                 if (ball.getCenter().getY() < 100) {
                     points.addPoints(20);
                 } else {

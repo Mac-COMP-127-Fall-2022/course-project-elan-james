@@ -1,13 +1,13 @@
 package pinball;
 
 import java.awt.Color;
-import java.util.Arrays;
 import java.util.List;
 import java.lang.Math;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsObject;
+import edu.macalester.graphics.Line;
 import edu.macalester.graphics.Point;
 
 public class Ball {
@@ -91,6 +91,15 @@ public class Ball {
         return false;
     }
 
+    public boolean bounceOffReflector(Reflector reflector) {
+        if (checkCircleCollision(this, reflector)) {
+            bounceOffCircleWithCenter(reflector.getCenter().getX(), reflector.getCenter().getY());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean checkCircleCollision(Ball ball, Reflector reflector) {
         Point ballCenter = ball.getCenter();
         Point reflectorCenter = reflector.getCenter();
@@ -101,9 +110,9 @@ public class Ball {
         return collision;
     }
 
-    public boolean updateCircleCollisionPosition(double x, double y) {
-        double diffBetweenX = ball.getCenter().getX() - x;
-        double diffBetweenY = ball.getCenter().getY() - y;
+    public boolean bounceOffCircleWithCenter(double centerX, double centerY) {
+        double diffBetweenX = ball.getCenter().getX() - centerX;
+        double diffBetweenY = ball.getCenter().getY() - centerY;
         Point ballVelocity = new Point(dx, dy);
         Point centerDiff = new Point(diffBetweenX, diffBetweenY);
         centerDiff = centerDiff.scale(1 / centerDiff.magnitude());
@@ -116,23 +125,31 @@ public class Ball {
 
     public boolean checkWallCollision(List<Wall> walls) {
         for (Wall wall : walls) {
-            double slope = wall.getY1() - wall.getY2() / wall.getX1() - wall.getX2();
-            double normalSlope = -(1 / slope);
-            if (normalSlope > 9999999 || normalSlope < -999999) {
-                break;
-            }
-            double x = 0;
-            double y = normalSlope * (-ball.getCenter().getX()) + ball.getCenter().getY();
-            Point intersectionPoint = getIntersection(ball.getCenter(), new Point(x, y), wall.getCenter1(), wall.getCenter2());
-            if (checkPointWithinLine(new Point(wall.getX1(), wall.getY1()), new Point(wall.getX2(), wall.getY2()), intersectionPoint) && ball.getWidth()/2 + wall.getWidth() > Math.hypot(ball.getCenter().getX() - intersectionPoint.getX(), ball.getCenter().getY() - intersectionPoint.getY())) {
-                updateCircleCollisionPosition(intersectionPoint.getX(), intersectionPoint.getY());
-                break;
+            //----------
+            Point normalToWall =
+                wall.getCenter1().subtract(wall.getCenter2())
+                    .rotate(Math.toRadians(90))
+                    .add(ball.getCenter());
+            Point ballWallIntersection =
+                getLineIntersection(
+                    ball.getCenter(), normalToWall,
+                    wall.getCenter1(), wall.getCenter2());
+
+            if (checkPointWithinLine(ballWallIntersection, wall.getCenter1(), wall.getCenter2())
+                    && ball.getWidth() / 2 > ball.getCenter().distance(ballWallIntersection)) {  // TODO: Consider accounting for wall width
+                bounceOffCircleWithCenter(ballWallIntersection.getX(), ballWallIntersection.getY());
+                break;  // TODO: should this be a return? What is the return value of this fn supposed to mean? Who uses it??
+            } else {
+                bounceOffReflector(
+                    new Reflector(wall.getCenter1().getX(), wall.getCenter1().getY(), 1));
+                bounceOffReflector(
+                    new Reflector(wall.getCenter2().getX(), wall.getCenter2().getY(), 1));
             }
         }
         return false;
     }
 
-    public Point getIntersection(Point line1_1, Point line1_2, Point line2_1, Point line2_2) {
+    public Point getLineIntersection(Point line1_1, Point line1_2, Point line2_1, Point line2_2) {
         double line1A = line1_2.getY() - line1_1.getY();
         double line1B = line1_1.getX() - line1_2.getX();
         double line1C = line1A * line1_1.getX() + line1B * line1_1.getY();
@@ -147,7 +164,7 @@ public class Ball {
         return new Point(x, y);
     }
 
-    public boolean checkPointWithinLine(Point startPoint, Point endPoint, Point point) {
+    public boolean checkPointWithinLine(Point point, Point startPoint, Point endPoint) {
         double minX = Math.min(startPoint.getX(), endPoint.getX());
         double minY = Math.min(startPoint.getY(), endPoint.getY());
 

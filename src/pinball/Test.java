@@ -19,7 +19,7 @@ public class Test {
         pinballLayer = new GraphicsGroup();
         canvas.add(pinballLayer);
         ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -85, pinballLayer);
-        reflector1 = new Reflector(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, pinballLayer);
+        // reflector1 = new Reflector(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, pinballLayer);
         reflectors.add(reflector1);
         canvas.animate(() -> {
             updateBall();
