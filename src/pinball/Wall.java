@@ -25,6 +25,25 @@ public class Wall {
         // rectangleLayer.add(wall);
     }
 
+    private Point getEndpoint1() {
+        return new Point(wall.getX1(), wall.getY1());
+    }
+
+    private Point getEndpoint2() {
+        return new Point(wall.getX2(), wall.getY2());
+    }
+
+    public double getRotation() {
+        return getEndpoint2().subtract(getEndpoint1()).angle();
+    }
+
+    public void rotateBy(double angle) {
+        wall.setEndPosition(
+            getEndpoint2().subtract(getEndpoint1())
+                .rotate(angle)
+                .add(getEndpoint1()));
+    }
+
     public Strokable getGraphics() {
         return wall;
     }
