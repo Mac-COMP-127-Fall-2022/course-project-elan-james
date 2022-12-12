@@ -47,7 +47,7 @@ public class Pinball {
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -60, rectangleLayer);
+        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -75, rectangleLayer);
     }
 
     public void createFlippers() {
@@ -74,7 +74,7 @@ public class Pinball {
         wall2 = new Wall(80, 400, 80, 450, 10, rectangleLayer);
         wall3 = new Wall(410, 455, 340, 530, 10, rectangleLayer);
         wall4 = new Wall(415, 400, 415, 450, 10, rectangleLayer);
-        wall5 = new Wall(0, 475, 200, 630, 10, rectangleLayer);
+        wall5 = new Wall(0, 450, 200, 630, 10, rectangleLayer);
         wall6 = new Wall(455, 480, 295, 630, 10, rectangleLayer);
         wall7 = new Wall(455, 150, 455, 650, 10, rectangleLayer);
         wall8 = new Wall(400, 0, 500, 100, 10, rectangleLayer);

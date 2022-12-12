@@ -125,7 +125,6 @@ public class Ball {
 
     public boolean checkWallCollision(List<Wall> walls) {
         for (Wall wall : walls) {
-            //----------
             Point normalToWall =
                 wall.getCenter1().subtract(wall.getCenter2())
                     .rotate(Math.toRadians(90))
