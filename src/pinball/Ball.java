@@ -180,16 +180,6 @@ public class Ball {
         return true;
     }
 
-    public boolean checkPointsCollision(GraphicsGroup rectangleLayer, Points points) {
-        if (checkCollision(0.1, rectangleLayer)) {
-            if (ball.getElementAt(ball.getX(), ball.getY()) == points.getGraphics()) {
-                points.addPoints(5);
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void resetBall(GraphicsGroup rectangleLayer) {
         rectangleLayer.remove(ball);
     }
