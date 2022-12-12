@@ -47,12 +47,12 @@ public class Pinball {
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -100, rectangleLayer);
+        ball = new Ball(30, 80, canvas, 50, -90, rectangleLayer);
     }
 
     public void createFlippers() {
-        leftFlipper = new Flipper(150, 550, 40, rectangleLayer);
-        rightFlipper = new Flipper(280, 550, 140, rectangleLayer);
+        leftFlipper = new Flipper(150, 550, true, 40, rectangleLayer);
+        rightFlipper = new Flipper(280, 550, true, 140, rectangleLayer);
     }
 
     public void createReflectors() {
@@ -87,6 +87,12 @@ public class Pinball {
 
     public void createPoints() {
         points = new Points(canvas);
+        // points.createPointLine(60, 470, 70, 477, rectangleLayer);
+        // points.createPointLine(440, 470, 430, 477, rectangleLayer);
+        // points.createPointLine(420, 100, 440, 110, rectangleLayer);
+        points.createPointsLine(60, 470, 45, rectangleLayer);
+        points.createPointsLine(430, 470, -45, rectangleLayer);
+        // points.createPointsLine(420, 100, 0, rectangleLayer);
     }
 
     public void moveFlippers() {
@@ -130,6 +136,7 @@ public class Pinball {
             ball.updateCollisionPosition(0.1);
         }
         ball.checkWallCollision(walls);
+        ball.checkPointsCollision(rectangleLayer, points);
         // belowFlippers();
     }
 

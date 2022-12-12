@@ -14,7 +14,7 @@ public class Flipper {
         isPressed = false;
         flipper.setFillColor(Color.BLACK);
         if (!isOnTheLeft) {
-            flipper.rotateBy(180+ angle);  
+            flipper.rotateBy(180 + angle);  
         } else { 
             flipper.rotateBy(angle);  
         }

@@ -50,7 +50,7 @@ public class Ball {
         return ball.getCenter();
     }
 
-    private double getWidth() {
+    public double getWidth() {
         return ball.getWidth();
     }
 
@@ -178,6 +178,16 @@ public class Ball {
         ball.setPosition(x, y);
         dy -= GRAVITY * dt;
         return true;
+    }
+
+    public boolean checkPointsCollision(GraphicsGroup rectangleLayer, Points points) {
+        if (checkCollision(0.1, rectangleLayer)) {
+            if (ball.getElementAt(ball.getX(), ball.getY()) == points.getGraphics()) {
+                points.addPoints(5);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void resetBall(GraphicsGroup rectangleLayer) {
