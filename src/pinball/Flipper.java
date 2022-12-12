@@ -9,11 +9,15 @@ public class Flipper {
     private Rectangle flipper;
     private boolean isPressed;
    
-    public Flipper(double x, double y, double angle, GraphicsGroup rectangleLayer) {
+    public Flipper(double x, double y, boolean isOnTheLeft, double angle, GraphicsGroup rectangleLayer) {
         flipper = new Rectangle(x, y, 70, 10);
         isPressed = false;
         flipper.setFillColor(Color.BLACK);
-        flipper.rotateBy(angle);
+        if (!isOnTheLeft) {
+            flipper.rotateBy(180+ angle);  
+        } else { 
+            flipper.rotateBy(angle);  
+        }
         rectangleLayer.add(flipper);
     }
 
