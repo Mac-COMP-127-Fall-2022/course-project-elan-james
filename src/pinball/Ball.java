@@ -12,7 +12,7 @@ import edu.macalester.graphics.Point;
 
 public class Ball {
     private Ellipse ball;
-    public static final double GRAVITY = -9.8;
+    public static final double GRAVITY = -100;
     private double x, y, dx, dy;
 
     public Ball(double x, double y, CanvasWindow canvas, double initialSpeed, double initialAngle, GraphicsGroup rectangleLayer) {
@@ -139,9 +139,9 @@ public class Ball {
                 break;  // TODO: should this be a return? What is the return value of this fn supposed to mean? Who uses it??
             } else {
                 bounceOffReflector(
-                    new Reflector(wall.getX1(), wall.getY1(), 1));
+                    new Reflector(wall.getX1(), wall.getY1(), wall.getWidth()));
                 bounceOffReflector(
-                    new Reflector(wall.getX2(), wall.getY2(), 1));
+                    new Reflector(wall.getX2(), wall.getY2(), wall.getWidth()));
             }
         }
         return false;
