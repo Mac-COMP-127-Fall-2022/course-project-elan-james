@@ -50,7 +50,7 @@ public class Ball {
         return ball.getCenter();
     }
 
-    private double getWidth() {
+    public double getWidth() {
         return ball.getWidth();
     }
 

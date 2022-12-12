@@ -16,7 +16,8 @@ public class Pinball {
     private CanvasWindow canvas;
     private Ball ball;
     private Flipper leftFlipper, rightFlipper;
-    private Reflector reflector1, reflector2, reflector3, reflector4, reflector5;
+    private Reflector reflector1, reflector2, reflector3, reflector4, reflector5, 
+        reflector6, reflector7, reflector8, reflector9, reflector10;
     private List<Reflector> reflectors;
     private Wall wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8;
     private List<Wall> walls;
@@ -47,12 +48,12 @@ public class Pinball {
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -100, rectangleLayer);
+        ball = new Ball(450, 80, canvas, 50, -90, rectangleLayer);
     }
 
     public void createFlippers() {
-        leftFlipper = new Flipper(150, 550, 40, rectangleLayer);
-        rightFlipper = new Flipper(280, 550, 140, rectangleLayer);
+        leftFlipper = new Flipper(150, 550, true, 40, rectangleLayer);
+        rightFlipper = new Flipper(280, 550, true, 140, rectangleLayer);
     }
 
     public void createReflectors() {
@@ -60,13 +61,24 @@ public class Pinball {
         reflector2 = new Reflector(75, 250);
         reflector3 = new Reflector(225, 350);
         reflector4 = new Reflector(375, 250);
+        // reflector5 = new Reflector(25, 50);
+        // reflector6 = new Reflector(475, 50);
+        reflector7 = new Reflector(60, 470, 3);
+        reflector8 = new Reflector(440, 470, 3);
+        reflector9 = new Reflector(100, 440, 3);
+        reflector10 = new Reflector(400, 440, 3);
         circleLayer.add(reflector1.getGraphics());
         circleLayer.add(reflector2.getGraphics());
         circleLayer.add(reflector3.getGraphics());
         circleLayer.add(reflector4.getGraphics());
-        // reflector5 = new Reflector(25, 50);
         // circleLayer.add(reflector5.getGraphics());
-        reflectors = Arrays.asList(reflector1, reflector2, reflector3, reflector4);
+        // circleLayer.add(reflector6.getGraphics());
+        circleLayer.add(reflector7.getGraphics());
+        circleLayer.add(reflector8.getGraphics());
+        circleLayer.add(reflector9.getGraphics());
+        circleLayer.add(reflector10.getGraphics());
+        reflectors = Arrays.asList(reflector1, reflector2, reflector3, reflector4, reflector7, 
+            reflector8, reflector9, reflector10);
     }
 
     public void createWalls() {
@@ -121,6 +133,8 @@ public class Pinball {
             if (ball.bounceOffReflector(reflector)) {
                 if (ball.getCenter().getY() < 100) {
                     points.addPoints(20);
+                } else if (ball.getCenter().getY() > 400) {
+                    points.addPoints(5);
                 } else {
                     points.addPoints(10);
                 }

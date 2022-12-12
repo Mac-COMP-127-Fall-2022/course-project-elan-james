@@ -1,10 +1,15 @@
 package pinball;
 
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.GraphicsGroup;
+import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.GraphicsText;
+import edu.macalester.graphics.Line;
+import edu.macalester.graphics.Rectangle;
 
 public class Points {
     private double points;
+    private Rectangle pointLine;
     private GraphicsText pointCounter;
 
     public Points(CanvasWindow canvas) {

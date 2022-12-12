@@ -30,7 +30,7 @@ public class Flipper {
         flipper.setFillColor(Color.BLACK);
 
         if (!isOnTheLeft) {
-            flipper.rotateBy(180+ angle);  
+            flipper.rotateBy(180 + angle);  
         } else { 
             flipper.rotateBy(angle);  
         }
