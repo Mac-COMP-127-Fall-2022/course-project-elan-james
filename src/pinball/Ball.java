@@ -134,20 +134,14 @@ public class Ball {
                     wall.getCenter1(), wall.getCenter2());
 
             if (checkPointWithinLine(ballWallIntersection, wall.getCenter1(), wall.getCenter2())
-                    && ball.getWidth() / 2 > ball.getCenter().distance(ballWallIntersection)) {  // TODO: Consider accounting for wall width
+                    && ball.getWidth() / 2 + wall.getWidth() / 2 > ball.getCenter().distance(ballWallIntersection)) {  // TODO: Consider accounting for wall width
                 bounceOffCircleWithCenter(ballWallIntersection.getX(), ballWallIntersection.getY());
                 break;  // TODO: should this be a return? What is the return value of this fn supposed to mean? Who uses it??
             } else {
-                Reflector joe;
-                Reflector sally;
                 bounceOffReflector(
-                    joe = new Reflector(wall.getX1(), wall.getY1(), 50));
-                    joe.getfillableGraphic().setFillColor(Color.BLACK);
-                    ball.getCanvas().add(joe.getGraphics());
+                    new Reflector(wall.getX1(), wall.getY1(), 1));
                 bounceOffReflector(
-                    sally = new Reflector(wall.getX2(), wall.getY2(), 50));
-                    sally.getfillableGraphic().setFillColor(Color.ORANGE);
-                    ball.getCanvas().add(sally.getGraphics());
+                    new Reflector(wall.getX2(), wall.getY2(), 1));
             }
         }
         return false;

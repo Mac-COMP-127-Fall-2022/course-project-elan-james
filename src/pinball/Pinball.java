@@ -47,12 +47,12 @@ public class Pinball {
     }
 
     public void createBall() {
-        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -75, rectangleLayer);
+        ball = new Ball(CANVAS_WIDTH/2, 100, canvas, 50, -100, rectangleLayer);
     }
 
     public void createFlippers() {
         leftFlipper = new Flipper(150, 550, 40, rectangleLayer);
-        rightFlipper = new Flipper(275, 550, 140, rectangleLayer);
+        rightFlipper = new Flipper(280, 550, 140, rectangleLayer);
     }
 
     public void createReflectors() {
@@ -64,21 +64,21 @@ public class Pinball {
         circleLayer.add(reflector2.getGraphics());
         circleLayer.add(reflector3.getGraphics());
         circleLayer.add(reflector4.getGraphics());
-        // reflector5 = new Reflector(25, 50, circleLayer);
+        // reflector5 = new Reflector(25, 50);
+        // circleLayer.add(reflector5.getGraphics());
         reflectors = Arrays.asList(reflector1, reflector2, reflector3, reflector4);
     }
 
     public void createWalls() {
         wall1 = new Wall(85, 455, 155, 530, 10, rectangleLayer);
-        // wall1 = new Wall(85, 455, 0, 0, 70, rectangleLayer);
         wall2 = new Wall(80, 400, 80, 450, 10, rectangleLayer);
-        wall3 = new Wall(410, 455, 340, 530, 10, rectangleLayer);
-        wall4 = new Wall(415, 400, 415, 450, 10, rectangleLayer);
+        wall3 = new Wall(415, 455, 345, 530, 10, rectangleLayer);
+        wall4 = new Wall(420, 400, 420, 450, 10, rectangleLayer);
         wall5 = new Wall(0, 450, 200, 630, 10, rectangleLayer);
-        wall6 = new Wall(455, 480, 295, 630, 10, rectangleLayer);
-        wall7 = new Wall(455, 150, 455, 650, 10, rectangleLayer);
-        wall8 = new Wall(400, 0, 500, 100, 10, rectangleLayer);
-        walls = Arrays.asList(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8);
+        wall6 = new Wall(500, 450, 300, 630, 10, rectangleLayer);
+        // wall7 = new Wall(455, 150, 455, 650, 10, rectangleLayer);
+        // wall8 = new Wall(400, 0, 510, 100, 10, rectangleLayer);
+        walls = Arrays.asList(wall1, wall2, wall3, wall4, wall5, wall6);
     }
 
     public void createSpring() {
