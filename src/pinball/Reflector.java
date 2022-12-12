@@ -1,6 +1,7 @@
 package pinball;
 
 import edu.macalester.graphics.Ellipse;
+import edu.macalester.graphics.Fillable;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Point;
@@ -15,9 +16,14 @@ public class Reflector {
 
     public Reflector(double x, double y, double diameter) {
         reflector = new Ellipse(x, y, diameter, diameter);
+        reflector.setCenter(x, y);
     }
 
     public GraphicsObject getGraphics() {
+        return reflector;
+    }
+
+    public Fillable getfillableGraphic() {
         return reflector;
     }
 

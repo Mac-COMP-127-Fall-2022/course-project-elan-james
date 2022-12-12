@@ -110,7 +110,7 @@ public class Ball {
         return collision;
     }
 
-    public boolean bounceOffCircleWithCenter(double centerX, double centerY) {
+    public void bounceOffCircleWithCenter(double centerX, double centerY) {
         double diffBetweenX = ball.getCenter().getX() - centerX;
         double diffBetweenY = ball.getCenter().getY() - centerY;
         Point ballVelocity = new Point(dx, dy);
@@ -120,7 +120,6 @@ public class Ball {
         Point newVelocity = ballVelocity.subtract(centerDiff.scale(dotProduct * 2));
         dx = newVelocity.getX();
         dy = newVelocity.getY();
-        return true;
     }
 
     public boolean checkWallCollision(List<Wall> walls) {
@@ -139,10 +138,16 @@ public class Ball {
                 bounceOffCircleWithCenter(ballWallIntersection.getX(), ballWallIntersection.getY());
                 break;  // TODO: should this be a return? What is the return value of this fn supposed to mean? Who uses it??
             } else {
+                Reflector joe;
+                Reflector sally;
                 bounceOffReflector(
-                    new Reflector(wall.getCenter1().getX(), wall.getCenter1().getY(), 1));
+                    joe = new Reflector(wall.getX1(), wall.getY1(), 50));
+                    joe.getfillableGraphic().setFillColor(Color.BLACK);
+                    ball.getCanvas().add(joe.getGraphics());
                 bounceOffReflector(
-                    new Reflector(wall.getCenter2().getX(), wall.getCenter2().getY(), 1));
+                    sally = new Reflector(wall.getX2(), wall.getY2(), 50));
+                    sally.getfillableGraphic().setFillColor(Color.ORANGE);
+                    ball.getCanvas().add(sally.getGraphics());
             }
         }
         return false;
