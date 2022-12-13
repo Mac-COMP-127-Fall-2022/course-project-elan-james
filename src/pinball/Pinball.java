@@ -19,9 +19,8 @@ public class Pinball {
 
     private CanvasWindow canvas;
     private Ball ball;
-    private Flipper leftFlipper, rightFlipper;
     private List<Reflector> reflectors;
-    private Wall leftPaddle, rightPaddle;
+    private Wall leftFlipper, rightFlipper;
     private List<Wall> walls;
     private Boolean leftKeyIsPressed, rightKeyIsPressed;
 
@@ -64,24 +63,19 @@ public class Pinball {
 
     public void handlePaddles(double dt) {
         if(leftKeyIsPressed) {
-            leftPaddle.rotateBy(dt * 5, false, true);
+            leftFlipper.rotateBy(dt * 5, false, true);
         } else {
-            leftPaddle.rotateBy(dt * 3, true, true);
+            leftFlipper.rotateBy(dt * 3, true, true);
         }
         if(rightKeyIsPressed) {
-            rightPaddle.rotateBy(dt * 5, true, false);
+            rightFlipper.rotateBy(dt * 5, true, false);
         } else {
-            rightPaddle.rotateBy(dt * 3, false, false);
+            rightFlipper.rotateBy(dt * 3, false, false);
         }
     }
 
     public void createBall() {
         ball = new Ball(100, 100, 400, -90, rectangleLayer);
-    }
-
-    public void createFlippers() {
-        leftFlipper = new Flipper(150, 550, true, 40, rectangleLayer);
-        rightFlipper = new Flipper(280, 550, true, 140, rectangleLayer);
     }
 
     public void createReflectors() {
@@ -102,8 +96,8 @@ public class Pinball {
     }
 
     public void createWalls() {
-        leftPaddle = new Wall(155, 530, 215, 550, Color.BLACK, canvas);
-        rightPaddle = new Wall(345, 530, 285, 550, Color.BLACK, canvas);
+        leftFlipper = new Wall(155, 530, 215, 550, Color.BLACK, canvas);
+        rightFlipper = new Wall(345, 530, 285, 550, Color.BLACK, canvas);
         walls = Arrays.asList(new Wall(85, 455, 155, 530, Color.GREEN, canvas),
         new Wall(80, 400, 80, 450, Color.GREEN, canvas), 
         new Wall(415, 455, 345, 530, Color.GREEN, canvas),
@@ -116,7 +110,7 @@ public class Pinball {
         new Wall(115, 85, 190, 55, Color.CYAN, canvas),
         new Wall(310, 5, 385, 35, Color.CYAN, canvas),
         new Wall(310, 55, 385, 85, Color.CYAN, canvas),
-        leftPaddle, rightPaddle);
+        leftFlipper, rightFlipper);
     }
 
     public void createPoints() {
