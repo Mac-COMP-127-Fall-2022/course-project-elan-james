@@ -54,11 +54,24 @@ public class Pinball {
                 handleBallInteractions(PHYSICS_TIMESTEP);
                 physicsTimer -= PHYSICS_TIMESTEP;
             }
-            paddlesGoLimp(dt);
+            handlePaddles(dt);
             flipperFlipLambdas(dt);
             UnpressedLambdas(dt);
         });
         moveSpring();
+    }
+
+    private void handlePaddles(double dt) {
+        if(leftKeyIsPressed) {
+            leftPaddle.rotateBy(dt * 5, false, true);
+        }// } else {
+        //     leftPaddle.rotateBy(dt * 5, true, true);
+        // }
+        if(rightKeyIsPressed) {
+            rightPaddle.rotateBy(dt * 5, true, true);
+        }// } else {
+        //     rightPaddle.rotateBy(dt * 5, false, true);
+        // }
     }
 
     public void createBall() {
@@ -113,7 +126,7 @@ public class Pinball {
         wall11 = new Wall(310, 20, 385, 50, 10, rectangleLayer);
         wall12 = new Wall(310, 70, 385, 100, 10, rectangleLayer);
         leftPaddle = new Wall(200, 550, 280, 550, 10, rectangleLayer);
-        rightPaddle = new Wall(320, 550, 250, 550, 10, rectangleLayer);
+        rightPaddle = new Wall(320, 551, 250, 550, 10, rectangleLayer);
         walls = Arrays.asList(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, 
             wall9, wall10, wall11, wall12, leftPaddle, rightPaddle);
     }
@@ -130,39 +143,19 @@ public class Pinball {
         Set<Key> keys = canvas.getKeysPressed();
         if (keys.contains(Key.LEFT_ARROW)) {
             leftKeyIsPressed = true;
-            leftPaddle.rotateBy(dt * 5, false, true);
-            // leftFlipper.setPressed(true);
         }
         if (keys.contains(Key.RIGHT_ARROW)) {
             rightKeyIsPressed = true;
-            rightPaddle.rotateBy(dt * 5, true, false);
-            // rightFlipper.movePaddleUp(30);
-            // rightFlipper.setPressed(true);
         }
-    }
-
-    public void paddlesGoLimp (double dt) {
-        if(!leftKeyIsPressed) leftPaddle.rotateBy(dt * 3, true, true);
-        if(!rightKeyIsPressed) rightPaddle.rotateBy(dt * 3, false, false);
     }
 
     public void UnpressedLambdas(double dt) {
         canvas.onKeyUp(event -> {
             if (event.getKey().equals(Key.LEFT_ARROW)) {
                 leftKeyIsPressed = false;
-                // if (leftPaddle.getRotationInDegrees() != leftPaddle.getMinDegreeOfRotation()) {
-                //     leftPaddle.rotateBy(dt * 5, true);
-                // }
-                // leftFlipper.setPressed(false);
-                // leftFlipper.movePaddleDown(-30);
             }
             if (event.getKey().equals(Key.RIGHT_ARROW)) {
                 rightKeyIsPressed = false;
-                // if (rightPaddle.getRotationInDegrees() != rightPaddle.getMinDegreeOfRotation()) {
-                //     rightPaddle.rotateBy(dt * 5, false);
-                // }
-                // rightFlipper.setPressed(false);
-                // rightFlipper.movePaddleDown(30);
             }
         });
     }

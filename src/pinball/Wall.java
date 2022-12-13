@@ -30,7 +30,7 @@ public class Wall {
         // rectangleLayer.add(wall);
     }
 
-    private double getTotalDegreesRotatedusing360(Boolean isALeftpaddle) {
+    private double getTotalDegreesRotatedUsing360(Boolean isALeftpaddle) {
         double degreesInTotal = 0;
         if (isALeftpaddle && this.getRotationInDegrees() < 180) {
             degreesInTotal = minAngle- this.getRotationInDegrees();
@@ -41,6 +41,7 @@ public class Wall {
         if (!isALeftpaddle) {
             degreesInTotal = this.getRotationInDegrees() - minAngle;
         } 
+        System.out.println(degreesInTotal);
         return degreesInTotal;
     }
     
@@ -70,18 +71,19 @@ public class Wall {
         if (degree >= 0) {
             return degree;
         } else {
-            return (180 + degree) + 180;
+            return (180 - degree) + 180;
         }
     }
     
     public void rotateBy(double angleInRads, Boolean rotateClockWise, Boolean isALeftpaddle) {
         double direction = getCorrectDirectionForRotation(rotateClockWise, angleInRads);
-        if (getTotalDegreesRotatedusing360(isALeftpaddle) < MAX_NUMBER_OF_DEGREES_ROTATAED) {
+        // if (getTotalDegreesRotatedUsing360(isALeftpaddle) < MAX_NUMBER_OF_DEGREES_ROTATAED + 10 
+        // && getTotalDegreesRotatedUsing360(isALeftpaddle) >= -10) {
             wall.setEndPosition(
                 getEndpoint2().subtract(getEndpoint1())
                     .rotate(direction)
                     .add(getEndpoint1()));
-        }
+        // }
     }
 
     public Point getEndpoint1() {
