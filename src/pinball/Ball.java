@@ -177,7 +177,7 @@ public class Ball {
         return true;
     }
 
-    public void resetBall(GraphicsGroup rectangleLayer) {
+    public void removeBall(GraphicsGroup rectangleLayer) {
         rectangleLayer.remove(ball);
     }
 }
