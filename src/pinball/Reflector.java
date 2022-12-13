@@ -2,9 +2,9 @@ package pinball;
 
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.Fillable;
-import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Point;
+import java.awt.Color;
 
 public class Reflector {
     private Ellipse reflector;
@@ -41,5 +41,9 @@ public class Reflector {
 
     public Point getCenter() {
         return reflector.getCenter();
+    }
+
+    public void setColor(Color color) {
+        reflector.setFillColor(color);
     }
 }

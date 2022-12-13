@@ -1,13 +1,9 @@
 package pinball;
 
 import java.awt.Color;
-import java.util.List;
-import java.lang.Math;
-import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsObject;
-import edu.macalester.graphics.Line;
 import edu.macalester.graphics.Point;
 
 public class Ball {
@@ -15,7 +11,7 @@ public class Ball {
     public static final double GRAVITY = -100;
     private double x, y, dx, dy;
 
-    public Ball(double x, double y, CanvasWindow canvas, double initialSpeed, double initialAngle, GraphicsGroup rectangleLayer) {
+    public Ball(double x, double y, double initialSpeed, double initialAngle, GraphicsGroup rectangleLayer) {
         this.x = x;
         this.y = y;
         ball = new Ellipse(x, y, 15, 15);
@@ -80,7 +76,7 @@ public class Ball {
         return false;
     }
 
-    public boolean checkCollision(double dt, GraphicsGroup rectangleLayer) {
+    public boolean checkCollision(GraphicsGroup rectangleLayer) {
         GraphicsObject point1 = rectangleLayer.getElementAt(x + (ball.getWidth()/2), y - 4);
         GraphicsObject point2 = rectangleLayer.getElementAt(x - 4, y + (ball.getWidth()/2));
         GraphicsObject point3 = rectangleLayer.getElementAt(x + (ball.getWidth()/2), y + ball.getWidth() + 4);
@@ -122,27 +118,25 @@ public class Ball {
         dy = newVelocity.getY();
     }
 
-    public boolean checkWallCollision(List<Wall> walls) {
-        for (Wall wall : walls) {
-            Point normalToWall =
-                wall.getCenter1().subtract(wall.getCenter2())
-                    .rotate(Math.toRadians(90))
-                    .add(ball.getCenter());
-            Point ballWallIntersection =
-                getLineIntersection(
-                    ball.getCenter(), normalToWall,
-                    wall.getCenter1(), wall.getCenter2());
+    public boolean checkWallCollision(Wall wall) {
+        Point normalToWall =
+            wall.getCenter1().subtract(wall.getCenter2())
+                .rotate(Math.toRadians(90))
+                .add(ball.getCenter());
+        Point ballWallIntersection =
+            getLineIntersection(
+                ball.getCenter(), normalToWall,
+                wall.getCenter1(), wall.getCenter2());
 
-            if (checkPointWithinLine(ballWallIntersection, wall.getCenter1(), wall.getCenter2())
-                    && ball.getWidth() / 2 + wall.getWidth() / 2 > ball.getCenter().distance(ballWallIntersection)) {  // TODO: Consider accounting for wall width
-                bounceOffCircleWithCenter(ballWallIntersection.getX(), ballWallIntersection.getY());
-                break;  // TODO: should this be a return? What is the return value of this fn supposed to mean? Who uses it??
-            } else {
-                bounceOffReflector(
-                    new Reflector(wall.getX1(), wall.getY1(), wall.getWidth()));
-                bounceOffReflector(
-                    new Reflector(wall.getX2(), wall.getY2(), wall.getWidth()));
-            }
+        if (checkPointWithinLine(ballWallIntersection, wall.getCenter1(), wall.getCenter2())
+                && ball.getWidth() / 2 + wall.getWidth() / 2 > ball.getCenter().distance(ballWallIntersection)) {
+            bounceOffCircleWithCenter(ballWallIntersection.getX(), ballWallIntersection.getY());
+            return true;
+        } else {
+            bounceOffReflector(
+                new Reflector(wall.getX1(), wall.getY1(), wall.getWidth()));
+            bounceOffReflector(
+                new Reflector(wall.getX2(), wall.getY2(), wall.getWidth()));
         }
         return false;
     }
