@@ -28,7 +28,7 @@ public class Pinball {
     private GraphicsGroup circleLayer;
 
     private Points points;
-    private int lives = 3;
+    private int lives = 2;
 
     private double physicsTimer = 0;
     
@@ -72,6 +72,15 @@ public class Pinball {
         } else {
             rightFlipper.rotateBy(dt * 3, false, false);
         }
+<<<<<<< Updated upstream
+=======
+    }// } else {
+        //     rightPaddle.rotateBy(dt * 5, false, true);
+        // }
+
+    public void createBall() {
+        ball = new Ball(300, 200, 500, -90, rectangleLayer);
+>>>>>>> Stashed changes
     }
 
     public void createBall() {
@@ -96,8 +105,13 @@ public class Pinball {
     }
 
     public void createWalls() {
+<<<<<<< Updated upstream
         leftFlipper = new Wall(155, 530, 215, 550, Color.BLACK, canvas);
         rightFlipper = new Wall(345, 530, 285, 550, Color.BLACK, canvas);
+=======
+        leftPaddle = new Wall(155, 530, 215, 530, Color.BLACK, canvas);
+        rightPaddle = new Wall(345, 530, 285, 530, Color.BLACK, canvas);
+>>>>>>> Stashed changes
         walls = Arrays.asList(new Wall(85, 455, 155, 530, Color.GREEN, canvas),
         new Wall(80, 400, 80, 450, Color.GREEN, canvas), 
         new Wall(415, 455, 345, 530, Color.GREEN, canvas),
@@ -174,27 +188,32 @@ public class Pinball {
         if (ball.getCenterY() > 600) {
             lives --;
             if (lives == 0) {
-                GraphicsText lose = new GraphicsText("No more lives left");
-                GraphicsText pointTotal = new GraphicsText("You ended with " + points.getPoints() + " points!");
-                lose.setPosition(20, 250);
-                lose.setFont(FontStyle.BOLD, 50);
-                pointTotal.setPosition(20, 330);
-                pointTotal.setFont(FontStyle.BOLD, 30);
-                canvas.add(lose);
-                canvas.add(pointTotal);
-                canvas.draw();
-                canvas.pause(10000);
-                canvas.closeWindow();
+                gameOver();
+            } else {
+                reset();
             }
-            reset();
         }
     }
 
+    public void gameOver() {
+        GraphicsText lose = new GraphicsText("No more lives left");
+        GraphicsText pointTotal = new GraphicsText("You ended with " + points.getPoints() + " points!");
+        lose.setPosition(20, 220);
+        lose.setFont(FontStyle.BOLD, 50);
+        pointTotal.setPosition(20, 305);
+        pointTotal.setFont(FontStyle.BOLD, 30);
+        canvas.add(lose);
+        canvas.add(pointTotal);
+        canvas.draw();
+        canvas.pause(10000);
+        canvas.closeWindow();
+    }
+
     public void reset() {
-        ball.resetBall(rectangleLayer);
+        ball.removeBall(rectangleLayer);
         createBall();
         GraphicsText livesLeft = new GraphicsText("You have " + lives + " lives left");
-        livesLeft.setPosition(40, 325);
+        livesLeft.setPosition(40, 310);
         livesLeft.setFont(FontStyle.BOLD, 40);
         canvas.add(livesLeft);
         canvas.draw();
