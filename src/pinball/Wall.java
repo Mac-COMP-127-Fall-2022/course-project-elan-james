@@ -2,27 +2,19 @@ package pinball;
 
 import java.awt.Color;
 
-import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Line;
 import edu.macalester.graphics.Point;
-import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.Strokable;
 
 public class Wall {
     private Line wall;
-    // private Rectangle wall;
-    // private double x1, y1, x2, y2;
 
-    public Wall(double x1, double y1, double x2, double y2, double width, GraphicsGroup rectanglGroup) {
+    public Wall(double x1, double y1, double x2, double y2, Color color, GraphicsGroup rectanglGroup) {
         wall = new Line(x1, y1, x2, y2);
-        wall.setStrokeWidth(width);
-        wall.setStrokeColor(Color.BLUE);
+        wall.setStrokeWidth(10);
+        wall.setStrokeColor(color);
         rectanglGroup.add(wall);
-
-        // wall = new Rectangle(x1, y1, width, 10);
-        // wall.setFillColor(Color.BLUE);
-        // rectangleLayer.add(wall);
     }
 
     private Point getEndpoint1() {
@@ -78,5 +70,9 @@ public class Wall {
 
     public double getWidth() {
         return wall.getStrokeWidth();
+    }
+
+    public void setColor(Color color) {
+        wall.setStrokeColor(color);
     }
 }

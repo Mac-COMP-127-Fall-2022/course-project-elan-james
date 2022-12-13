@@ -4,8 +4,10 @@ import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.FontStyle;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsText;
+import edu.macalester.graphics.Image;
 import edu.macalester.graphics.events.Key;
 
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -19,11 +21,10 @@ public class Pinball {
     private Ball ball;
     private Flipper leftFlipper, rightFlipper;
     private Reflector reflector1, reflector2, reflector3, reflector4, reflector5, 
-        reflector6, reflector7, reflector8, reflector9, reflector10, reflector11;
+        reflector6, reflector7;
     private List<Reflector> reflectors;
     private Wall wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11, wall12;
     private List<Wall> walls;
-    private Spring spring;
 
     private GraphicsGroup rectangleLayer;
     private GraphicsGroup circleLayer;
@@ -35,6 +36,10 @@ public class Pinball {
     
     public Pinball() {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
+        Image background = new Image("background.png");
+        background.setMaxWidth(500);
+        background.setMaxHeight(900);
+        canvas.add(background);
         rectangleLayer = new GraphicsGroup();
         circleLayer = new GraphicsGroup();
         canvas.add(rectangleLayer);
@@ -43,23 +48,21 @@ public class Pinball {
         createFlippers();
         createReflectors();
         createWalls();
-        // createSpring();
         createPoints();
         canvas.animate((dt) -> {
-            wall4.rotateBy(dt * 5);
             physicsTimer += dt;
             while (physicsTimer > 0) {
                 handleBallInteractions(PHYSICS_TIMESTEP);
                 physicsTimer -= PHYSICS_TIMESTEP;
             }
+            ballReflectorInteractions();
             moveFlippers();
         });
-        moveSpring();
         unPresssed();
     }
 
     public void createBall() {
-        ball = new Ball(450, 80, canvas, 500, -90, rectangleLayer);
+        ball = new Ball(100, 100, 500, -90, rectangleLayer);
     }
 
     public void createFlippers() {
@@ -68,53 +71,38 @@ public class Pinball {
     }
 
     public void createReflectors() {
-        reflector1 = new Reflector(225, 150);
-        reflector2 = new Reflector(75, 250);
-        reflector3 = new Reflector(225, 350);
-        reflector4 = new Reflector(375, 250);
-        // reflector5 = new Reflector(25, 50);
-        // reflector6 = new Reflector(475, 50);
-        reflector7 = new Reflector(60, 470, 3);
-        reflector8 = new Reflector(440, 470, 3);
-        reflector9 = new Reflector(100, 440, 3);
-        reflector10 = new Reflector(400, 440, 3);
-        reflector11 = new Reflector(250, 45, 2);
+        reflector1 = new Reflector(250, 150);
+        reflector2 = new Reflector(100, 250);
+        reflector3 = new Reflector(250, 350);
+        reflector4 = new Reflector(400, 250);
+        reflector5 = new Reflector(25, 80);
+        reflector6 = new Reflector(475, 80);
+        reflector7 = new Reflector(250, 30, 40);
         circleLayer.add(reflector1.getGraphics());
         circleLayer.add(reflector2.getGraphics());
         circleLayer.add(reflector3.getGraphics());
         circleLayer.add(reflector4.getGraphics());
-        // circleLayer.add(reflector5.getGraphics());
-        // circleLayer.add(reflector6.getGraphics());
+        circleLayer.add(reflector5.getGraphics());
+        circleLayer.add(reflector6.getGraphics());
         circleLayer.add(reflector7.getGraphics());
-        circleLayer.add(reflector8.getGraphics());
-        circleLayer.add(reflector9.getGraphics());
-        circleLayer.add(reflector10.getGraphics());
-        circleLayer.add(reflector11.getGraphics());
-        reflectors = Arrays.asList(reflector1, reflector2, reflector3, reflector4, reflector7, 
-            reflector8, reflector9, reflector10, reflector11);
+        reflectors = Arrays.asList(reflector1, reflector2, reflector3, reflector4, reflector5, reflector6, reflector7);
     }
 
     public void createWalls() {
-        wall1 = new Wall(85, 455, 155, 530, 10, rectangleLayer);
-        wall2 = new Wall(80, 400, 80, 450, 10, rectangleLayer);
-        wall3 = new Wall(415, 455, 345, 530, 10, rectangleLayer);
-        wall4 = new Wall(420, 400, 420, 450, 10, rectangleLayer);
-        wall5 = new Wall(0, 450, 200, 630, 10, rectangleLayer);
-        wall6 = new Wall(500, 450, 300, 630, 10, rectangleLayer);
-        // wall7 = new Wall(455, 150, 455, 650, 10, rectangleLayer);
-        // wall8 = new Wall(400, 0, 510, 100, 10, rectangleLayer);
-        wall7 = new Wall(190, 20, 310, 20, 10, rectangleLayer);
-        wall8 = new Wall(190, 70, 310, 70, 10, rectangleLayer);
-        wall9 = new Wall(115, 50, 190, 20, 10, rectangleLayer);
-        wall10 = new Wall(115, 100, 190, 70, 10, rectangleLayer);
-        wall11 = new Wall(310, 20, 385, 50, 10, rectangleLayer);
-        wall12 = new Wall(310, 70, 385, 100, 10, rectangleLayer);
+        wall1 = new Wall(85, 455, 155, 530, Color.GREEN, rectangleLayer);
+        wall2 = new Wall(80, 400, 80, 450, Color.GREEN, rectangleLayer);
+        wall3 = new Wall(415, 455, 345, 530, Color.GREEN, rectangleLayer);
+        wall4 = new Wall(420, 400, 420, 450, Color.GREEN, rectangleLayer);
+        wall5 = new Wall(0, 450, 200, 630, Color.GREEN, rectangleLayer);
+        wall6 = new Wall(500, 450, 300, 630, Color.GREEN, rectangleLayer);
+        wall7 = new Wall(190, 5, 310, 5, Color.CYAN, rectangleLayer);
+        wall8 = new Wall(190, 55, 310, 55, Color.CYAN, rectangleLayer);
+        wall9 = new Wall(115, 35, 190, 5, Color.CYAN, rectangleLayer);
+        wall10 = new Wall(115, 85, 190, 55, Color.CYAN, rectangleLayer);
+        wall11 = new Wall(310, 5, 385, 35, Color.CYAN, rectangleLayer);
+        wall12 = new Wall(310, 55, 385, 85, Color.CYAN, rectangleLayer);
         walls = Arrays.asList(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, 
             wall9, wall10, wall11, wall12);
-    }
-
-    public void createSpring() {
-        spring = new Spring(rectangleLayer);
     }
 
     public void createPoints() {
@@ -149,10 +137,24 @@ public class Pinball {
     public void handleBallInteractions(double dt) {
         ball.moveBall(dt, CANVAS_WIDTH, CANVAS_HEIGHT);
         ball.checkCanvasWallCollision(dt, CANVAS_WIDTH, CANVAS_HEIGHT);
+        if (ball.checkCollision(rectangleLayer)) {
+            ball.updateCollisionPosition(dt);
+        }
+        for (Wall wall : walls) {
+            if (ball.checkWallCollision(wall)) {
+                points.addPoints(1);
+            }
+        }
+        // belowFlippers();
+    }
+
+    public void ballReflectorInteractions() {
         for (Reflector reflector : reflectors) {
+            reflector.setColor(Color.CYAN);
             if (ball.bounceOffReflector(reflector)) {
+                reflector.setColor(Color.YELLOW);
                 if (ball.getCenter().getY() < 100) {
-                    if (reflector.getRadius() < 50) {
+                    if (reflector.getRadius() < 25) {
                         points.addPoints(100);
                     } else {
                         points.addPoints(20);
@@ -164,15 +166,6 @@ public class Pinball {
                 }
             } 
         }
-        if (ball.checkCollision(dt, rectangleLayer)) {
-            ball.updateCollisionPosition(dt);
-        }
-        ball.checkWallCollision(walls);
-        // belowFlippers();
-    }
-
-    public void moveSpring() {
-        canvas.onDrag(event -> spring.updatePosition(event.getPosition().getY()));
     }
 
     public void belowFlippers() {
@@ -183,7 +176,7 @@ public class Pinball {
                 GraphicsText pointTotal = new GraphicsText("You ended with " + points.getPoints() + " points!");
                 lose.setPosition(20, 250);
                 lose.setFont(FontStyle.BOLD, 50);
-                pointTotal.setPosition(40, 330);
+                pointTotal.setPosition(20, 330);
                 pointTotal.setFont(FontStyle.BOLD, 30);
                 canvas.add(lose);
                 canvas.add(pointTotal);
