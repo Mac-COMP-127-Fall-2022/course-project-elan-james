@@ -21,9 +21,10 @@ public class Pinball {
     private Reflector reflector1, reflector2, reflector3, reflector4, reflector5, 
         reflector6, reflector7, reflector8, reflector9, reflector10, reflector11;
     private List<Reflector> reflectors;
-    private Wall wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11, wall12;
+    private Wall leftPaddle, rightPaddle, wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11, wall12;
     private List<Wall> walls;
     private Spring spring;
+    private Boolean leftKeyIsPressed, rightKeyIsPressed;
 
     private GraphicsGroup rectangleLayer;
     private GraphicsGroup circleLayer;
@@ -39,23 +40,25 @@ public class Pinball {
         circleLayer = new GraphicsGroup();
         canvas.add(rectangleLayer);
         canvas.add(circleLayer);
+        leftKeyIsPressed = false;
+        rightKeyIsPressed = false;
         createBall();
-        createFlippers();
+        // createFlippers();
         createReflectors();
         createWalls();
         // createSpring();
         createPoints();
         canvas.animate((dt) -> {
-            wall4.rotateBy(dt * 5);
             physicsTimer += dt;
             while (physicsTimer > 0) {
                 handleBallInteractions(PHYSICS_TIMESTEP);
                 physicsTimer -= PHYSICS_TIMESTEP;
             }
-            moveFlippers();
+            paddlesGoLimp(dt);
+            flipperFlipLambdas(dt);
+            UnpressedLambdas(dt);
         });
         moveSpring();
-        unPresssed();
     }
 
     public void createBall() {
@@ -109,8 +112,10 @@ public class Pinball {
         wall10 = new Wall(115, 100, 190, 70, 10, rectangleLayer);
         wall11 = new Wall(310, 20, 385, 50, 10, rectangleLayer);
         wall12 = new Wall(310, 70, 385, 100, 10, rectangleLayer);
+        leftPaddle = new Wall(200, 550, 280, 550, 10, rectangleLayer);
+        rightPaddle = new Wall(320, 550, 250, 550, 10, rectangleLayer);
         walls = Arrays.asList(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, 
-            wall9, wall10, wall11, wall12);
+            wall9, wall10, wall11, wall12, leftPaddle, rightPaddle);
     }
 
     public void createSpring() {
@@ -121,27 +126,43 @@ public class Pinball {
         points = new Points(canvas);
     }
 
-    public void moveFlippers() {
+    public void flipperFlipLambdas(double dt) {
         Set<Key> keys = canvas.getKeysPressed();
         if (keys.contains(Key.LEFT_ARROW)) {
-            leftFlipper.movePaddleUp(-30);
-            leftFlipper.setPressed(true);
+            leftKeyIsPressed = true;
+            leftPaddle.rotateBy(dt * 5, false, true);
+            // leftFlipper.setPressed(true);
         }
         if (keys.contains(Key.RIGHT_ARROW)) {
-            rightFlipper.movePaddleUp(30);
-            rightFlipper.setPressed(true);
+            rightKeyIsPressed = true;
+            rightPaddle.rotateBy(dt * 5, true, false);
+            // rightFlipper.movePaddleUp(30);
+            // rightFlipper.setPressed(true);
         }
     }
 
-    public void unPresssed() {
+    public void paddlesGoLimp (double dt) {
+        if(!leftKeyIsPressed) leftPaddle.rotateBy(dt * 3, true, true);
+        if(!rightKeyIsPressed) rightPaddle.rotateBy(dt * 3, false, false);
+    }
+
+    public void UnpressedLambdas(double dt) {
         canvas.onKeyUp(event -> {
             if (event.getKey().equals(Key.LEFT_ARROW)) {
-                leftFlipper.setPressed(false);
-                leftFlipper.movePaddleDown(-30);
+                leftKeyIsPressed = false;
+                // if (leftPaddle.getRotationInDegrees() != leftPaddle.getMinDegreeOfRotation()) {
+                //     leftPaddle.rotateBy(dt * 5, true);
+                // }
+                // leftFlipper.setPressed(false);
+                // leftFlipper.movePaddleDown(-30);
             }
             if (event.getKey().equals(Key.RIGHT_ARROW)) {
-                rightFlipper.setPressed(false);
-                rightFlipper.movePaddleDown(30);
+                rightKeyIsPressed = false;
+                // if (rightPaddle.getRotationInDegrees() != rightPaddle.getMinDegreeOfRotation()) {
+                //     rightPaddle.rotateBy(dt * 5, false);
+                // }
+                // rightFlipper.setPressed(false);
+                // rightFlipper.movePaddleDown(30);
             }
         });
     }
