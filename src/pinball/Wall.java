@@ -10,7 +10,7 @@ import edu.macalester.graphics.Strokable;
 
 public class Wall {
     private Line wall;
-    private double maxAngle, minAngle;
+    private double maxAngleInDegrees, minAngleInDegrees;
     private static double MAX_NUMBER_OF_DEGREES_ROTATAED = 90;
    
     // private Rectangle wall;
@@ -21,39 +21,21 @@ public class Wall {
         wall.setStrokeWidth(10);
         wall.setStrokeColor(color);
         canvas.add(wall);
-        minAngle = this.getRotationInDegrees();
-        maxAngle = 270;
+        minAngleInDegrees = this.getRotationInDegrees();
+        maxAngleInDegrees = -90;
         
         // wall = new Rectangle(x1, y1, width, 10);
         // wall.setFillColor(Color.BLUE);
         // rectangleLayer.add(wall);
     }
 
-    private double getTotalDegreesRotatedUsing360(Boolean isALeftpaddle) {
-        double degreesInTotal = 0;
-        if (isALeftpaddle && this.getRotationInDegrees() < 180) {
-            degreesInTotal = minAngle- this.getRotationInDegrees();
-        } 
-        if (isALeftpaddle && this.getRotationInDegrees() > 180) {
-            degreesInTotal = 360 - maxAngle + minAngle;
-        }
-        if (!isALeftpaddle) {
-            degreesInTotal = this.getRotationInDegrees() - minAngle;
-        } 
-        System.out.println(degreesInTotal);
-        return degreesInTotal;
-    }
     
     public double getRotationInDegrees() {
-        return degreeOutOf360(Math.toDegrees(this.getEndpoint2().subtract(getEndpoint1()).angle()));
-    }
-
-    public double getRotationOutOfPlusMinus180Degrees() {
         return Math.toDegrees(this.getEndpoint2().subtract(getEndpoint1()).angle());
     }
    
-    public double getMinAngle() {
-        return minAngle;
+    public double getMinAngleInDegrees() {
+        return minAngleInDegrees;
     }
 
     private double getCorrectDirectionForRotation(Boolean rotateClockWise, double angleInRads) {
@@ -65,24 +47,41 @@ public class Wall {
         }
         return direction;
     }
-
-    private double degreeOutOf360(double degree) {
-        if (degree >= 0) {
-            return degree;
-        } else {
-            return (180 - degree) + 180;
-        }
-    }
     
     public void rotateBy(double angleInRads, Boolean rotateClockWise, Boolean isALeftpaddle) {
         double direction = getCorrectDirectionForRotation(rotateClockWise, angleInRads);
-        // if (getTotalDegreesRotatedUsing360(isALeftpaddle) < MAX_NUMBER_OF_DEGREES_ROTATAED + 10 
-        // && getTotalDegreesRotatedUsing360(isALeftpaddle) >= -10) {
+        if (isWithinRotationBounds(isALeftpaddle)) {
             wall.setEndPosition(
                 getEndpoint2().subtract(getEndpoint1())
-                    .rotate(direction)
-                    .add(getEndpoint1()));
-        // }
+                .rotate(direction)
+                .add(getEndpoint1()));
+        }
+        if (!isWithinRotationBounds(isALeftpaddle)) {
+            wall.setEndPosition(
+                getEndpoint2().subtract(getEndpoint1())
+                .rotate(-direction)
+                .add(getEndpoint1()));
+        } 
+    }
+            
+    private Boolean isWithinRotationBounds(Boolean isALeftpaddle) {
+        boolean itCan = true;
+        boolean isPositive = false;
+        if (this.getRotationInDegrees() >= 0) {
+            isPositive = true; 
+        }
+        if (isALeftpaddle && this.getRotationInDegrees() <= minAngleInDegrees && Math.abs(this.getRotationInDegrees()) <= Math.abs(maxAngleInDegrees)) {
+            itCan = true;
+        } 
+        else if (!isALeftpaddle && Math.abs(this.getRotationInDegrees()) >= Math.abs(maxAngleInDegrees)) {
+            itCan = true;
+            if (isPositive && this.getRotationInDegrees() < minAngleInDegrees) {
+                itCan = false;
+            }
+        } else {
+            itCan = false;
+        }
+        return itCan; 
     }
 
     public Point getEndpoint1() {

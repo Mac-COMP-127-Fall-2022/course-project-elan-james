@@ -65,18 +65,18 @@ public class Pinball {
     public void handlePaddles(double dt) {
         if(leftKeyIsPressed) {
             leftPaddle.rotateBy(dt * 5, false, true);
-        }// } else {
-        //     leftPaddle.rotateBy(dt * 5, true, true);
-        // }
-        if(rightKeyIsPressed) {
-            rightPaddle.rotateBy(dt * 5, true, true);
+        } else {
+            leftPaddle.rotateBy(dt * 3, true, true);
         }
-    }// } else {
-        //     rightPaddle.rotateBy(dt * 5, false, true);
-        // }
+        if(rightKeyIsPressed) {
+            rightPaddle.rotateBy(dt * 5, true, false);
+        } else {
+            rightPaddle.rotateBy(dt * 3, false, false);
+        }
+    }
 
     public void createBall() {
-        ball = new Ball(100, 100, 500, -90, rectangleLayer);
+        ball = new Ball(100, 100, 400, -90, rectangleLayer);
     }
 
     public void createFlippers() {
@@ -102,8 +102,8 @@ public class Pinball {
     }
 
     public void createWalls() {
-        leftPaddle = new Wall(200, 550, 280, 550, Color.BLACK, canvas);
-        rightPaddle = new Wall(320, 551, 250, 550, Color.BLACK, canvas);
+        leftPaddle = new Wall(155, 530, 215, 550, Color.BLACK, canvas);
+        rightPaddle = new Wall(345, 530, 285, 550, Color.BLACK, canvas);
         walls = Arrays.asList(new Wall(85, 455, 155, 530, Color.GREEN, canvas),
         new Wall(80, 400, 80, 450, Color.GREEN, canvas), 
         new Wall(415, 455, 345, 530, Color.GREEN, canvas),
