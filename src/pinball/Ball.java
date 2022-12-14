@@ -21,25 +21,51 @@ public class Ball {
         dy = initialSpeed * Math.sin(initialAngleRadians) * -1;
     }
 
+    public double getCenterY() {
+        return ball.getCenter().getY();
+    }
+
     public Point getCenter() {
         return ball.getCenter();
     }
 
-    public double getWidth() {
+    private double getWidth() {
         return ball.getWidth();
     }
 
-    public void moveBall(double dt, double maxX, double maxY, boolean isPaused) {
+    /**
+     * Moves the ball around according to it's x and y velocity 
+     * @param dt time
+     * @param isPaused stops moving ball while game is paused
+     */
+    public void moveBall(double dt, boolean isPaused) {
         if (!isPaused) {
             x += dx * dt;
             y += dy * dt;
-            if ((x > 0 && x < maxX) && (y > 0 && y < maxY)) {
-                ball.setPosition(x, y);
-                dy -= GRAVITY * dt;
-            }
+            ball.setPosition(x, y);
+            dy -= GRAVITY * dt;
         }
     }
-
+ 
+    /**
+     * tests if a ball is colliding with the reflector 
+     * @param reflector
+     * @return
+     */
+    public boolean bounceOffReflector(Reflector reflector) {
+        if (checkCircleCollision(this, reflector)) {
+            bounceOffCircleWithCenter(reflector.getCenter().getX(), reflector.getCenter().getY());
+            return true;
+        } else {
+            return false;
+        }
+    }
+/**
+ * see return:
+ * @param ball
+ * @param reflector
+ * @return true if ball is colliding with reflector
+ */
     public boolean checkCircleCollision(Ball ball, Reflector reflector) {
         Point ballCenter = ball.getCenter();
         Point reflectorCenter = reflector.getCenter();
@@ -50,6 +76,11 @@ public class Ball {
         return collision;
     }
 
+    /**
+     * causes this ball to bounce of a circle with center:
+     * @param centerX
+     * @param centerY
+     */
     public void bounceOffCircleWithCenter(double centerX, double centerY) {
         double diffBetweenX = ball.getCenter().getX() - centerX;
         double diffBetweenY = ball.getCenter().getY() - centerY;
@@ -62,6 +93,12 @@ public class Ball {
         dy = newVelocity.getY();
     }
 
+    /**
+     * Figures out if the ball is touching one of the walls or paddles (lines)
+     * also adds some why value if the ball is hitting a flipper to reduce bugs.
+     * @param wall
+     * @return true if ball radius is inside a wall's stroke width
+     */
     public boolean checkWallCollision(Wall wall) {
         Point normalToWall =
             wall.getCenter1().subtract(wall.getCenter2())
@@ -83,6 +120,15 @@ public class Ball {
         return false;
     }
 
+    /**
+     * Uses two lines in point form
+     * See return:
+     * @param line1_1
+     * @param line1_2
+     * @param line2_1
+     * @param line2_2
+     * @return returns the point the two lines intersect at
+     */
     public Point getLineIntersection(Point line1_1, Point line1_2, Point line2_1, Point line2_2) {
         double line1A = line1_2.getY() - line1_1.getY();
         double line1B = line1_1.getX() - line1_2.getX();
@@ -98,6 +144,14 @@ public class Ball {
         return new Point(x, y);
     }
 
+    /**
+     * Checks to see if given point is within a line. 
+     * line is taken in point form.
+     * @param point
+     * @param startPoint
+     * @param endPoint
+     * @return true if point is on line
+     */
     public boolean checkPointWithinLine(Point point, Point startPoint, Point endPoint) {
         double minX = Math.min(startPoint.getX(), endPoint.getX());
         double minY = Math.min(startPoint.getY(), endPoint.getY());
@@ -108,7 +162,11 @@ public class Ball {
         return point.getX() >= minX && point.getX() <= maxX && point.getY() >= minY && point.getY() <= maxY;
     }
 
-    public void removeBall(GraphicsGroup gameLayer) {
-        gameLayer.remove(ball);
+    /**
+     * removes the ball from the graphics group
+     * @param rectangleLayer
+     */
+    public void removeBall(GraphicsGroup rectangleLayer) {
+        rectangleLayer.remove(ball);
     }
 }

@@ -33,6 +33,11 @@ public class Pinball {
 
     private double physicsTimer = 0;
     
+    /**
+     * A pinball game with 3 rounds. Rounds 2 and 3 are triggered by pushing any button. 
+     * After you lose your third life, the program does nothing else. Points are accumulated
+     * for hitting the circles on the screen.
+     */
     public Pinball() {
         canvas = new CanvasWindow("Pinball", CANVAS_WIDTH, CANVAS_HEIGHT);
         gameLayer = new GraphicsGroup();
@@ -48,22 +53,26 @@ public class Pinball {
         canvas.animate((dt) -> {
             physicsTimer += dt;
             while (physicsTimer > 0) {
-                ballWallInteractions(PHYSICS_TIMESTEP);
+                handleBallInteractions(PHYSICS_TIMESTEP);
                 physicsTimer -= PHYSICS_TIMESTEP;
             }
-            ballReflectorInteractions();
             handlePaddles(dt);
-            flipperFlipLambdas();
-            unpressedLambdas();
-            belowFlippers();
+            flipperFlipLambdas(dt);
+            unpressedLambdas(dt);
         });
     }
 
+    /**
+     * Initializes the ball
+     */
     public void createBall() {
         Random rand = new Random();
         ball = new Ball(rand.nextDouble(200, 300), 100, 400, rand.nextDouble(-135, -45), gameLayer);
     }
 
+    /**
+     * Initializes the reflectors (circles)
+     */
     public void createReflectors() {
         reflectors = Arrays.asList(new Reflector(250, 150),
         new Reflector(100, 250),
@@ -81,6 +90,9 @@ public class Pinball {
         gameLayer.add(reflectors.get(6).getGraphics());
     }
 
+    /**
+     * Initializes the walls (rectancles) and flippers
+     */
     public void createWalls() {
         leftFlipper = new Wall(155, 530, 215, 550, Color.BLACK, gameLayer);
         rightFlipper = new Wall(345, 530, 285, 550, Color.BLACK, gameLayer);
@@ -103,20 +115,57 @@ public class Pinball {
         leftFlipper, rightFlipper);
     }
 
+    /**
+     * initialized scoreboard
+     */
     public void createPoints() {
         points = new Points(canvas);
     }
 
+    /**
+     * sets bools when right and left arrow keys are pressed
+     */
+    public void flipperFlipLambdas(double dt) {
+        Set<Key> keys = canvas.getKeysPressed();
+        if (keys.contains(Key.LEFT_ARROW)) {
+            leftKeyIsPressed = true;
+        }
+        if (keys.contains(Key.RIGHT_ARROW)) {
+            rightKeyIsPressed = true;
+        }
+    }
 
-    public void ballWallInteractions(double dt) {
-        ball.moveBall(dt, CANVAS_WIDTH, CANVAS_HEIGHT, isPaused);
+    /**
+     * sets bools when right and left arrow keys are pressed
+     */
+    public void unpressedLambdas(double dt) {
+        canvas.onKeyUp(event -> {
+            if (event.getKey().equals(Key.LEFT_ARROW)) {
+                leftKeyIsPressed = false;
+            }
+            if (event.getKey().equals(Key.RIGHT_ARROW)) {
+                rightKeyIsPressed = false;
+            }
+        });
+    }
+
+    /**
+     * handles the ball interactions
+     * @param dt
+     */
+    public void handleBallInteractions(double dt) {
+        ball.moveBall(dt, isPaused);
+        ballReflectorInteractions();
         for (Wall wall : walls) {
             if (ball.checkWallCollision(wall)) {
                 points.addPoints(1);
             }
         }
     }
-
+    
+    /**
+     * handles ball to reflector collision logic
+     */
     public void ballReflectorInteractions() {
         for (Reflector reflector : reflectors) {
             reflector.setColor(Color.CYAN);
@@ -170,8 +219,12 @@ public class Pinball {
         });
     }
 
+    
+    /**
+     * handles lose logic for each round
+     */
     public void belowFlippers() {
-        if (ball.getCenter().getY() > 555) {
+        if (ball.getCenterY() > 580) {
             lives --;
             if (lives == 0) {
                 gameOver();
@@ -182,6 +235,9 @@ public class Pinball {
         }
     }
 
+    /**
+     * starts each round
+     */
     public void initializeRound() {
         ball.removeBall(gameLayer);
         createBall();
@@ -198,6 +254,9 @@ public class Pinball {
         });
     }
 
+    /**
+     * handles game ending logic
+     */
     public void gameOver() {
         GraphicsText lose = new GraphicsText("No more lives left");
         GraphicsText pointTotal = new GraphicsText("You ended with \n" + points.getPoints() + " points!");

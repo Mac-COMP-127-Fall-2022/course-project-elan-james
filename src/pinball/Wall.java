@@ -6,6 +6,10 @@ import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Line;
 import edu.macalester.graphics.Point;
 
+/**
+ * Walls make up the game boarder, flippers, and on screen walls. Each is a line
+ * with a start and end Point. Most interactions are handles using Points when possible.
+ */
 public class Wall {
     private Line wall;
     private boolean isAFlipper;
@@ -20,11 +24,16 @@ public class Wall {
         maxAngleInDegrees = -90;
     }
 
-    
+    /**
+     * Get's the walls rotation in degrees
+     */
     public double getRotationInDegrees() {
         return Math.toDegrees(this.getEndpoint2().subtract(getEndpoint1()).angle());
     }
-
+   
+    /**
+     * returns degrees based on the direction the flipper/wall should move
+     */
     public double getCorrectDirectionForRotation(Boolean rotateClockWise, double angleInRads) {
         double direction = 0;
         if (!rotateClockWise) {
@@ -35,6 +44,9 @@ public class Wall {
         return direction;
     }
     
+    /**
+     * Moves the second point of the line around the first point
+     */
     public void rotateBy(double angleInRads, Boolean rotateClockWise, Boolean isALeftpaddle) {
         double direction = getCorrectDirectionForRotation(rotateClockWise, angleInRads);
         isAFlipper = true;
@@ -51,7 +63,10 @@ public class Wall {
                 .add(getEndpoint1()));
         } 
     }
-            
+    
+    /**
+     * returns true if wall is within it's bounds of rotation
+     */
     public boolean isWithinRotationBounds(Boolean isALeftpaddle) {
         boolean itCan = true;
         boolean isPositive = false;
