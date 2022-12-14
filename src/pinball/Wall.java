@@ -3,19 +3,16 @@ package pinball;
 import java.awt.Color;
 
 import edu.macalester.graphics.CanvasWindow;
-import edu.macalester.graphics.GraphicsGroup;
+
 import edu.macalester.graphics.Line;
 import edu.macalester.graphics.Point;
 import edu.macalester.graphics.Strokable;
 
 public class Wall {
     private Line wall;
-    private double maxAngleInDegrees, minAngleInDegrees;
-    private static double MAX_NUMBER_OF_DEGREES_ROTATAED = 90;
-   
-    // private Rectangle wall;
-    // private double x1, y1, x2, y2;
-    
+    private boolean isAFlipper;
+    private double maxAngleInDegrees, minAngleInDegrees; 
+
     public Wall(double x1, double y1, double x2, double y2, Color color, CanvasWindow canvas) {
         wall = new Line(x1, y1, x2, y2);
         wall.setStrokeWidth(10);
@@ -50,6 +47,7 @@ public class Wall {
     
     public void rotateBy(double angleInRads, Boolean rotateClockWise, Boolean isALeftpaddle) {
         double direction = getCorrectDirectionForRotation(rotateClockWise, angleInRads);
+        isAFlipper = true;
         if (isWithinRotationBounds(isALeftpaddle)) {
             wall.setEndPosition(
                 getEndpoint2().subtract(getEndpoint1())
@@ -107,6 +105,11 @@ public class Wall {
     public double getX2() {
         return wall.getX2();
     }
+
+    public boolean isThisAFlipper() {
+        return isAFlipper;
+    }
+
 
     public double getY1() {
         return wall.getY1();

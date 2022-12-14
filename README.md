@@ -5,9 +5,9 @@ Project Title
 Names of your team members
 
 Project description:
-    Give a one-sentence description of your project, so that somebody considering pulling the code knows what to expect.
+    This is a pinball game with fun colors and mostly working game physics!
 Give a brief technical guide to running your code:
-    What are its technical requirements? (At a minimum, it requires that you have Java 17 installed, because that’s what Kilt Graphics requires. Anything else?)
+    It requires Java 17, 
 How should somebody run the program? Where is the main class?
     Acknowledge any help, references, inspiration, or outside resources you used. If your game includes any art or sound assets, or includes the work of others in any way, credit the creator(s) and link to the source(s).
 Known issues:

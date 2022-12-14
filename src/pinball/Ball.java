@@ -131,8 +131,8 @@ public class Ball {
         if (checkPointWithinLine(ballWallIntersection, wall.getCenter1(), wall.getCenter2())
                 && ball.getWidth() / 2 + wall.getWidth() / 2 > ball.getCenter().distance(ballWallIntersection)) {
             bounceOffCircleWithCenter(ballWallIntersection.getX(), ballWallIntersection.getY());
-            if (wall.getEndpoint2() != new Point(wall.getX2(), wall.getY2())) {
-                this.x += 3;
+            if (wall.isThisAFlipper()) {
+                this.y -= 3;
             } 
             return true;
         } else {
