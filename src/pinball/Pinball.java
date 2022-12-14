@@ -34,7 +34,7 @@ public class Pinball {
     private GraphicsGroup gameLayer;
 
     private Points points;
-    private int lives = 1;
+    private int lives = 3;
 
     private double physicsTimer = 0;
     
@@ -71,7 +71,7 @@ public class Pinball {
 
     public void createBall() {
         Random rand = new Random();
-        ball = new Ball(rand.nextDouble(200, 300), 95, 400, rand.nextDouble(-135, -45), gameLayer);
+        ball = new Ball(rand.nextDouble(190, 310), 80, 300, rand.nextDouble(-135, -45), gameLayer);
     }
 
     public void createReflectors() {
