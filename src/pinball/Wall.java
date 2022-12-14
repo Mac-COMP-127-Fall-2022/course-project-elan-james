@@ -2,37 +2,27 @@ package pinball;
 
 import java.awt.Color;
 
-import edu.macalester.graphics.CanvasWindow;
-
+import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Line;
 import edu.macalester.graphics.Point;
-import edu.macalester.graphics.Strokable;
 
 public class Wall {
     private Line wall;
     private boolean isAFlipper;
     private double maxAngleInDegrees, minAngleInDegrees; 
 
-    public Wall(double x1, double y1, double x2, double y2, Color color, CanvasWindow canvas) {
+    public Wall(double x1, double y1, double x2, double y2, Color color, GraphicsGroup gameLayer) {
         wall = new Line(x1, y1, x2, y2);
         wall.setStrokeWidth(10);
         wall.setStrokeColor(color);
-        canvas.add(wall);
+        gameLayer.add(wall);
         minAngleInDegrees = this.getRotationInDegrees();
         maxAngleInDegrees = -90;
-        
-        // wall = new Rectangle(x1, y1, width, 10);
-        // wall.setFillColor(Color.BLUE);
-        // rectangleLayer.add(wall);
     }
 
     
     public double getRotationInDegrees() {
         return Math.toDegrees(this.getEndpoint2().subtract(getEndpoint1()).angle());
-    }
-   
-    public double getMinAngleInDegrees() {
-        return minAngleInDegrees;
     }
 
     public double getCorrectDirectionForRotation(Boolean rotateClockWise, double angleInRads) {
@@ -90,14 +80,6 @@ public class Wall {
         return new Point(wall.getX2(), wall.getY2());
     }
 
-    public Strokable getGraphics() {
-        return wall;
-    }
-
-    public Point getPosition() {
-        return wall.getPosition();
-    }
-
     public double getX1() {
         return wall.getX1();
     }
@@ -105,11 +87,6 @@ public class Wall {
     public double getX2() {
         return wall.getX2();
     }
-
-    public boolean isThisAFlipper() {
-        return isAFlipper;
-    }
-
 
     public double getY1() {
         return wall.getY1();
@@ -131,7 +108,7 @@ public class Wall {
         return wall.getStrokeWidth();
     }
 
-    public void setColor(Color color) {
-        wall.setStrokeColor(color);
+    public boolean isThisAFlipper() {
+        return isAFlipper;
     }
 }

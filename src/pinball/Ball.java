@@ -3,7 +3,6 @@ package pinball;
 import java.awt.Color;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsGroup;
-import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Point;
 
 public class Ball {
@@ -11,35 +10,15 @@ public class Ball {
     public static final double GRAVITY = -100;
     private double x, y, dx, dy;
 
-    public Ball(double x, double y, double initialSpeed, double initialAngle, GraphicsGroup rectangleLayer) {
+    public Ball(double x, double y, double initialSpeed, double initialAngle, GraphicsGroup gameLayer) {
         this.x = x;
         this.y = y;
         ball = new Ellipse(x, y, 15, 15);
         ball.setFillColor(Color.BLACK);
-        rectangleLayer.add(ball);
+        gameLayer.add(ball);
         double initialAngleRadians = Math.toRadians(initialAngle);
         dx = initialSpeed * Math.cos(initialAngleRadians);
         dy = initialSpeed * Math.sin(initialAngleRadians) * -1;
-    }
-
-    public double getX() {
-        return ball.getX();
-    }
-
-    public double getY() {
-        return ball.getY();
-    }
-
-    public double getCenterX() {
-        return x + ball.getWidth()/2;
-    }
-
-    public double getCenterY() {
-        return y + ball.getHeight()/2;
-    }
-
-    public double getRadius() {
-        return ball.getWidth()/2;
     }
 
     public Point getCenter() {
@@ -50,36 +29,14 @@ public class Ball {
         return ball.getWidth();
     }
 
-    public boolean moveBall(double dt, double maxX, double maxY, boolean isPaused) {
+    public void moveBall(double dt, double maxX, double maxY, boolean isPaused) {
         if (!isPaused) {
             x += dx * dt;
             y += dy * dt;
             if ((x > 0 && x < maxX) && (y > 0 && y < maxY)) {
                 ball.setPosition(x, y);
                 dy -= GRAVITY * dt;
-                return true;
             }
-        }
-        return false;
-    }
-
-    public boolean checkCollision(GraphicsGroup rectangleLayer) {
-        GraphicsObject point1 = rectangleLayer.getElementAt(x + (ball.getWidth()/2), y - 4);
-        GraphicsObject point2 = rectangleLayer.getElementAt(x - 4, y + (ball.getWidth()/2));
-        GraphicsObject point3 = rectangleLayer.getElementAt(x + (ball.getWidth()/2), y + ball.getWidth() + 4);
-        GraphicsObject point4 = rectangleLayer.getElementAt(x + ball.getWidth() + 4, y + (ball.getWidth()/2));
-        if (point1 != null || point2 != null || point3 != null || point4 != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean bounceOffReflector(Reflector reflector) {
-        if (checkCircleCollision(this, reflector)) {
-            bounceOffCircleWithCenter(reflector.getCenter().getX(), reflector.getCenter().getY());
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -122,11 +79,6 @@ public class Ball {
                 this.y -= 10;
             } 
             return true;
-        } else {
-            bounceOffReflector(
-                new Reflector(wall.getX1(), wall.getY1(), wall.getWidth()));
-            bounceOffReflector(
-                new Reflector(wall.getX2(), wall.getY2(), wall.getWidth()));
         }
         return false;
     }
@@ -156,15 +108,7 @@ public class Ball {
         return point.getX() >= minX && point.getX() <= maxX && point.getY() >= minY && point.getY() <= maxY;
     }
 
-    public boolean updateCollisionPosition(double dt) {
-        dy = -dy;
-        y += dy * dt;
-        ball.setPosition(x, y);
-        dy -= GRAVITY * dt;
-        return true;
-    }
-
-    public void removeBall(GraphicsGroup rectangleLayer) {
-        rectangleLayer.remove(ball);
+    public void removeBall(GraphicsGroup gameLayer) {
+        gameLayer.remove(ball);
     }
 }

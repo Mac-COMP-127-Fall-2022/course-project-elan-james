@@ -1,14 +1,12 @@
 package pinball;
 
 import edu.macalester.graphics.Ellipse;
-import edu.macalester.graphics.Fillable;
 import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Point;
 import java.awt.Color;
 
 public class Reflector {
     private Ellipse reflector;
-    private double x, y;
 
     public Reflector(double x, double y) {
         this(x, y, 50);
@@ -21,18 +19,6 @@ public class Reflector {
 
     public GraphicsObject getGraphics() {
         return reflector;
-    }
-
-    public Fillable getfillableGraphic() {
-        return reflector;
-    }
-
-    public double getCenterX() {
-        return x + reflector.getWidth()/2;
-    }
-
-    public double getCenterY() {
-        return y + reflector.getHeight()/2;
     }
 
     public double getRadius() {
