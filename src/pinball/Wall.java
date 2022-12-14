@@ -35,7 +35,7 @@ public class Wall {
         return minAngleInDegrees;
     }
 
-    private double getCorrectDirectionForRotation(Boolean rotateClockWise, double angleInRads) {
+    public double getCorrectDirectionForRotation(Boolean rotateClockWise, double angleInRads) {
         double direction = 0;
         if (!rotateClockWise) {
             direction = -angleInRads;
@@ -62,7 +62,7 @@ public class Wall {
         } 
     }
             
-    private Boolean isWithinRotationBounds(Boolean isALeftpaddle) {
+    public boolean isWithinRotationBounds(Boolean isALeftpaddle) {
         boolean itCan = true;
         boolean isPositive = false;
         if (this.getRotationInDegrees() >= 0) {
