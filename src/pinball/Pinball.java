@@ -60,6 +60,7 @@ public class Pinball {
             handlePaddles(dt);
             flipperFlipLambdas(dt);
             unpressedLambdas(dt);
+            belowFlippers();
         });
     }
 
