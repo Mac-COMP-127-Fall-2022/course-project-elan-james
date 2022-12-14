@@ -10,6 +10,7 @@ import edu.macalester.graphics.events.Key;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class Pinball {
@@ -76,7 +77,8 @@ public class Pinball {
     }
 
     public void createBall() {
-        ball = new Ball(300, 100, 400, -90, rectangleLayer);
+        Random rand = new Random();
+        ball = new Ball(rand.nextDouble(100, 300), 100, 400, rand.nextDouble(-135, -45), rectangleLayer);
     }
 
     public void createReflectors() {
@@ -175,7 +177,7 @@ public class Pinball {
     }
 
     public void belowFlippers() {
-        if (ball.getCenterY() > 600) {
+        if (ball.getCenterY() > 540) {
             lives --;
             if (lives == 0) {
                 gameOver();
@@ -188,10 +190,10 @@ public class Pinball {
 
     public void gameOver() {
         GraphicsText lose = new GraphicsText("No more lives left");
-        GraphicsText pointTotal = new GraphicsText("You ended with " + points.getPoints() + " points!");
+        GraphicsText pointTotal = new GraphicsText("You ended with \n" + points.getPoints() + " points!");
         lose.setPosition(20, 220);
         lose.setFont(FontStyle.BOLD, 50);
-        pointTotal.setPosition(20, 305);
+        pointTotal.setPosition(130, 260);
         pointTotal.setFont(FontStyle.BOLD, 30);
         canvas.add(lose);
         canvas.add(pointTotal);
@@ -203,9 +205,10 @@ public class Pinball {
     public void initializeRound() {
         ball.removeBall(rectangleLayer);
         createBall();
-        GraphicsText livesLeft = new GraphicsText("You have " + lives + " lives left");
+        GraphicsText livesLeft = new GraphicsText("You have " + lives + 
+        " lives left. \n Click to start next round");
         livesLeft.setPosition(40, 310);
-        livesLeft.setFont(FontStyle.BOLD, 40);
+        livesLeft.setFont(FontStyle.BOLD, 30);
         canvas.add(livesLeft);
         canvas.draw();
         canvas.pause(3000);
