@@ -111,6 +111,10 @@ public class Pinball {
         new Wall(115, 85, 190, 55, Color.CYAN, canvas),
         new Wall(310, 5, 385, 35, Color.CYAN, canvas),
         new Wall(310, 55, 385, 85, Color.CYAN, canvas),
+        new Wall(0, 0, 500, 0, Color.CYAN, canvas),
+        new Wall(500, 0, 500, 650, Color.CYAN, canvas),
+        new Wall(0, 650, 500, 650, Color.CYAN, canvas),
+        new Wall(0, 0, 0, 650, Color.CYAN, canvas),
         leftFlipper, rightFlipper);
     }
 
@@ -141,7 +145,6 @@ public class Pinball {
 
     public void handleBallInteractions(double dt) {
         ball.moveBall(dt, CANVAS_WIDTH, CANVAS_HEIGHT, isPaused);
-        ball.checkCanvasWallCollision(dt, CANVAS_WIDTH, CANVAS_HEIGHT);
         if (ball.checkCollision(rectangleLayer)) {
             ball.updateCollisionPosition(dt);
         }

@@ -63,21 +63,6 @@ public class Ball {
         return false;
     }
 
-    public boolean checkCanvasWallCollision(double dt, double maxX, double maxY) {
-        if (x <= 0 || x >= maxX) {
-            dx = -dx;
-            x += dx * dt;
-            ball.setPosition(x, y);
-            return true;
-        } else if (y <= 0 || y >= maxY) {
-            dy = -dy;
-            y += dy * dt;
-            ball.setPosition(x, y);
-            return true;
-        }
-        return false;
-    }
-
     public boolean checkCollision(GraphicsGroup rectangleLayer) {
         GraphicsObject point1 = rectangleLayer.getElementAt(x + (ball.getWidth()/2), y - 4);
         GraphicsObject point2 = rectangleLayer.getElementAt(x - 4, y + (ball.getWidth()/2));
