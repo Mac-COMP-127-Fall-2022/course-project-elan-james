@@ -21,10 +21,6 @@ public class Ball {
         dy = initialSpeed * Math.sin(initialAngleRadians) * -1;
     }
 
-    public double getCenterY() {
-        return ball.getCenter().getY();
-    }
-
     public Point getCenter() {
         return ball.getCenter();
     }
@@ -46,26 +42,13 @@ public class Ball {
             dy -= GRAVITY * dt;
         }
     }
- 
+
     /**
-     * tests if a ball is colliding with the reflector 
+     * see return:
+     * @param ball
      * @param reflector
-     * @return
+     * @return true if ball is colliding with reflector
      */
-    public boolean bounceOffReflector(Reflector reflector) {
-        if (checkCircleCollision(this, reflector)) {
-            bounceOffCircleWithCenter(reflector.getCenter().getX(), reflector.getCenter().getY());
-            return true;
-        } else {
-            return false;
-        }
-    }
-/**
- * see return:
- * @param ball
- * @param reflector
- * @return true if ball is colliding with reflector
- */
     public boolean checkCircleCollision(Ball ball, Reflector reflector) {
         Point ballCenter = ball.getCenter();
         Point reflectorCenter = reflector.getCenter();
@@ -164,9 +147,9 @@ public class Ball {
 
     /**
      * removes the ball from the graphics group
-     * @param rectangleLayer
+     * @param gameLayer
      */
-    public void removeBall(GraphicsGroup rectangleLayer) {
-        rectangleLayer.remove(ball);
+    public void removeBall(GraphicsGroup gameLayer) {
+        gameLayer.remove(ball);
     }
 }
