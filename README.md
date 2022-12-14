@@ -1,20 +1,16 @@
-# Project Title Goes Here
+# Pinball fields
 
-Project Title
-
-Names of your team members
+Elan Levin and James McCarthy 
 
 Project description:
     This is a pinball game with fun colors and mostly working game physics!
-Give a brief technical guide to running your code:
-    It requires Java 17, 
-How should somebody run the program? Where is the main class?
-    Acknowledge any help, references, inspiration, or outside resources you used. If your game includes any art or sound assets, or includes the work of others in any way, credit the creator(s) and link to the source(s).
+Brief technical guide to running Pinball fields:
+    It requires Java 17, it runs in vs code and uses kilt graphics and the macalester specific library.  
+How to run the program:
+    The main class is found at the bottom of the Pinball file. 
 Known issues:
-    Are there fundamental design limitations that users should be aware of?
-    Are there specific bugs, glitches, or shortcomings that users should be aware of?
+    Our limited programming abilities heavily restricted our abaility to make the game physics flawless. The ball often get's trapped bouncing inside of the walls or reflectors, and can pass through the bottom of the flippers relatively easily. The game doesn't do anything once you've lost all your lives. Points are added during glitches. This program can be extremely laggy as a lot of the physics we used was suboptimal based on our code restrictions. 
 Societal impact:
-    Please write about how your project abides by ethical considerations and socially responsible computing practices. Be mindful that anything created by humans, including software, can carry embedded biases and have unintended consequences. In every software project, you must consider the ways in which your program can promote justice or heighten injustices, either through unintentional effects or through malicious misuse.
-
-This may seem like an odd question. For example, Breakout cannot possibly have negative consequences…right? It is just a game, and such a simple little game at that! But can a blind person play it? What about somebody who uses an assistive device instead of a mouse?
+    While our game has no sound, it is heavily reliant on visual cues, and can't be played by those who are blind, visually impaired, are sensitive to bright light, and 
+    therefore carries and an ability bias by nature. The game is also quite taxing on it's home system which carries all related costs/impacts associated. 
 
