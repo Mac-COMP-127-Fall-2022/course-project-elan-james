@@ -56,6 +56,7 @@ public class Pinball {
                 handleBallInteractions(PHYSICS_TIMESTEP);
                 physicsTimer -= PHYSICS_TIMESTEP;
             }
+            ballReflectorInteractions();
             handlePaddles(dt);
             flipperFlipLambdas(dt);
             unpressedLambdas(dt);
@@ -91,7 +92,7 @@ public class Pinball {
     }
 
     /**
-     * Initializes the walls (rectancles) and flippers
+     * Initializes the walls (rectangles) and flippers
      */
     public void createWalls() {
         leftFlipper = new Wall(155, 530, 215, 550, Color.BLACK, gameLayer);
@@ -155,7 +156,6 @@ public class Pinball {
      */
     public void handleBallInteractions(double dt) {
         ball.moveBall(dt, isPaused);
-        ballReflectorInteractions();
         for (Wall wall : walls) {
             if (ball.checkWallCollision(wall)) {
                 points.addPoints(1);
@@ -224,7 +224,7 @@ public class Pinball {
      * handles lose logic for each round
      */
     public void belowFlippers() {
-        if (ball.getCenterY() > 580) {
+        if (ball.getCenter().getY() > 580) {
             lives --;
             if (lives == 0) {
                 gameOver();
