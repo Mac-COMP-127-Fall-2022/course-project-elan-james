@@ -4,8 +4,10 @@ import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Point;
 import java.awt.Color;
+
+// Elan Levin and James McCarthy
 /**
-* ellipses the ball can bounce off of to gain points. This is a glorified ellipse. 
+* Ellipses the ball can bounce off of to gain points. Can be created with a set diameter of a diameter of choice. 
 */
 public class Reflector {
     private Ellipse reflector;
@@ -18,16 +20,13 @@ public class Reflector {
     }
 
     /**
-     * constructor for the circles that help with wall collision and other small tasks
+     * Constructor for reflectors of any given diameter
      */
     public Reflector(double x, double y, double diameter) {
         reflector = new Ellipse(x, y, diameter, diameter);
         reflector.setCenter(x, y);
     }
-
-    /**
-     * Getters and setters:
-     */
+    
     public GraphicsObject getGraphics() {
         return reflector;
     }

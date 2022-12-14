@@ -2,8 +2,10 @@ package pinball;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsText;
+
+// Elan Levin and James McCarthy
 /**
- * basically acts as a scoreboard
+ * Creates the points and point counter. Contains methods to get the point total and add points.
  */
 public class Points {
     private double points;
@@ -16,15 +18,12 @@ public class Points {
         canvas.add(pointCounter);
     }
 
-    /**
-     * getter
-     */
     public double getPoints() {
         return points;
     }
 
     /**
-     * gives player points and updates text
+     * Gives player points and updates text
      */
     public void addPoints(double num) {
         points += num;

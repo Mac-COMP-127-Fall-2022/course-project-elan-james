@@ -13,6 +13,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+// Elan Levin and James McCarthy
+/**
+ * The Pinball game. Creates the ball, reflctors, flippers, and walls on the canvas.
+ * Keeps track of the player's lives and how many points they have.
+ */
 public class Pinball {
     private static final int CANVAS_WIDTH = 500;
     private static final int CANVAS_HEIGHT = 650;
@@ -29,7 +34,7 @@ public class Pinball {
     private GraphicsGroup gameLayer;
 
     private Points points;
-    private int lives = 3;
+    private int lives = 1;
 
     private double physicsTimer = 0;
     
@@ -53,28 +58,22 @@ public class Pinball {
         canvas.animate((dt) -> {
             physicsTimer += dt;
             while (physicsTimer > 0) {
-                handleBallInteractions(PHYSICS_TIMESTEP);
+                ballWallInteractions(PHYSICS_TIMESTEP);
                 physicsTimer -= PHYSICS_TIMESTEP;
             }
             ballReflectorInteractions();
-            handlePaddles(dt);
-            flipperFlipLambdas(dt);
-            unpressedLambdas(dt);
+            handleFlippers(dt);
+            flipperFlipLambdas();
+            unpressedLambdas();
             belowFlippers();
         });
     }
 
-    /**
-     * Initializes the ball
-     */
     public void createBall() {
         Random rand = new Random();
-        ball = new Ball(rand.nextDouble(200, 300), 100, 400, rand.nextDouble(-135, -45), gameLayer);
+        ball = new Ball(rand.nextDouble(200, 300), 95, 400, rand.nextDouble(-135, -45), gameLayer);
     }
 
-    /**
-     * Initializes the reflectors (circles)
-     */
     public void createReflectors() {
         reflectors = Arrays.asList(new Reflector(250, 150),
         new Reflector(100, 250),
@@ -92,9 +91,6 @@ public class Pinball {
         gameLayer.add(reflectors.get(6).getGraphics());
     }
 
-    /**
-     * Initializes the walls (rectangles) and flippers
-     */
     public void createWalls() {
         leftFlipper = new Wall(155, 530, 215, 550, Color.BLACK, gameLayer);
         rightFlipper = new Wall(345, 530, 285, 550, Color.BLACK, gameLayer);
@@ -117,45 +113,15 @@ public class Pinball {
         leftFlipper, rightFlipper);
     }
 
-    /**
-     * initialized scoreboard
-     */
     public void createPoints() {
         points = new Points(canvas);
     }
 
     /**
-     * sets bools when right and left arrow keys are pressed
-     */
-    public void flipperFlipLambdas(double dt) {
-        Set<Key> keys = canvas.getKeysPressed();
-        if (keys.contains(Key.LEFT_ARROW)) {
-            leftKeyIsPressed = true;
-        }
-        if (keys.contains(Key.RIGHT_ARROW)) {
-            rightKeyIsPressed = true;
-        }
-    }
-
-    /**
-     * sets bools when right and left arrow keys are pressed
-     */
-    public void unpressedLambdas(double dt) {
-        canvas.onKeyUp(event -> {
-            if (event.getKey().equals(Key.LEFT_ARROW)) {
-                leftKeyIsPressed = false;
-            }
-            if (event.getKey().equals(Key.RIGHT_ARROW)) {
-                rightKeyIsPressed = false;
-            }
-        });
-    }
-
-    /**
-     * handles the ball interactions
+     * Moves the ball and handles ball to wall collision logic
      * @param dt
      */
-    public void handleBallInteractions(double dt) {
+    public void ballWallInteractions(double dt) {
         ball.moveBall(dt, isPaused);
         for (Wall wall : walls) {
             if (ball.checkWallCollision(wall)) {
@@ -165,7 +131,7 @@ public class Pinball {
     }
     
     /**
-     * handles ball to reflector collision logic
+     * Handles ball to reflector collision logic
      */
     public void ballReflectorInteractions() {
         for (Reflector reflector : reflectors) {
@@ -186,7 +152,7 @@ public class Pinball {
         }
     }
 
-    public void handlePaddles(double dt) {
+    public void handleFlippers(double dt) {
         if(leftKeyIsPressed) {
             leftFlipper.rotateBy(dt * 5, false, true);
         } else {
@@ -199,6 +165,9 @@ public class Pinball {
         }
     }
 
+    /**
+     * Sets bools when right and left arrow keys are pressed
+     */
     public void flipperFlipLambdas() {
         Set<Key> keys = canvas.getKeysPressed();
         if (keys.contains(Key.LEFT_ARROW)) {
@@ -209,6 +178,9 @@ public class Pinball {
         }
     }
 
+    /**
+     * Sets bools when right and left arrow keys are pressed
+     */
     public void unpressedLambdas() {
         canvas.onKeyUp(event -> {
             if (event.getKey().equals(Key.LEFT_ARROW)) {
@@ -219,13 +191,12 @@ public class Pinball {
             }
         });
     }
-
-    
+   
     /**
-     * handles lose logic for each round
+     * Handles lose logic for each round
      */
     public void belowFlippers() {
-        if (ball.getCenter().getY() > 580) {
+        if (ball.getCenter().getY() > 555) {
             lives --;
             if (lives == 0) {
                 gameOver();
@@ -237,7 +208,7 @@ public class Pinball {
     }
 
     /**
-     * starts each round
+     * Starts each round
      */
     public void initializeRound() {
         ball.removeBall(gameLayer);
@@ -256,14 +227,14 @@ public class Pinball {
     }
 
     /**
-     * handles game ending logic
+     * Handles game ending logic
      */
     public void gameOver() {
         GraphicsText lose = new GraphicsText("No more lives left");
         GraphicsText pointTotal = new GraphicsText("You ended with \n" + points.getPoints() + " points!");
         lose.setPosition(70, 220);
         lose.setFont(FontStyle.BOLD, 40);
-        pointTotal.setPosition(130, 260);
+        pointTotal.setPosition(128, 260);
         pointTotal.setFont(FontStyle.BOLD, 30);
         canvas.add(lose);
         canvas.add(pointTotal);

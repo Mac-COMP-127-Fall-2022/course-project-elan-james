@@ -6,9 +6,10 @@ import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Line;
 import edu.macalester.graphics.Point;
 
+// Elan Levin and James McCarthy
 /**
- * Walls make up the game boarder, flippers, and on screen walls. Each is a line
- * with a start and end Point. Most interactions are handles using Points when possible.
+ * Walls make up the flippers, on screen walls, and edge walls. Each is a line
+ * with a start and end Point. Contains methods to animate the flippers.
  */
 public class Wall {
     private Line wall;
@@ -25,14 +26,14 @@ public class Wall {
     }
 
     /**
-     * Get's the walls rotation in degrees
+     * Gets the walls rotation in degrees
      */
     public double getRotationInDegrees() {
         return Math.toDegrees(this.getEndpoint2().subtract(getEndpoint1()).angle());
     }
    
     /**
-     * returns degrees based on the direction the flipper/wall should move
+     * Returns degrees based on the direction the flipper/wall should move
      */
     public double getCorrectDirectionForRotation(Boolean rotateClockWise, double angleInRads) {
         double direction = 0;
@@ -47,16 +48,16 @@ public class Wall {
     /**
      * Moves the second point of the line around the first point
      */
-    public void rotateBy(double angleInRads, Boolean rotateClockWise, Boolean isALeftpaddle) {
+    public void rotateBy(double angleInRads, Boolean rotateClockWise, Boolean isALeftFlipper) {
         double direction = getCorrectDirectionForRotation(rotateClockWise, angleInRads);
         isAFlipper = true;
-        if (isWithinRotationBounds(isALeftpaddle)) {
+        if (isWithinRotationBounds(isALeftFlipper)) {
             wall.setEndPosition(
                 getEndpoint2().subtract(getEndpoint1())
                 .rotate(direction)
                 .add(getEndpoint1()));
         }
-        if (!isWithinRotationBounds(isALeftpaddle)) {
+        if (!isWithinRotationBounds(isALeftFlipper)) {
             wall.setEndPosition(
                 getEndpoint2().subtract(getEndpoint1())
                 .rotate(-direction)
@@ -65,18 +66,18 @@ public class Wall {
     }
     
     /**
-     * returns true if wall is within it's bounds of rotation
+     * Returns true if wall is within it's bounds of rotation
      */
-    public boolean isWithinRotationBounds(Boolean isALeftpaddle) {
+    public boolean isWithinRotationBounds(Boolean isALeftFlipper) {
         boolean itCan = true;
         boolean isPositive = false;
         if (this.getRotationInDegrees() >= 0) {
             isPositive = true; 
         }
-        if (isALeftpaddle && this.getRotationInDegrees() <= minAngleInDegrees && Math.abs(this.getRotationInDegrees()) <= Math.abs(maxAngleInDegrees)) {
+        if (isALeftFlipper && this.getRotationInDegrees() <= minAngleInDegrees && Math.abs(this.getRotationInDegrees()) <= Math.abs(maxAngleInDegrees)) {
             itCan = true;
         } 
-        else if (!isALeftpaddle && Math.abs(this.getRotationInDegrees()) >= Math.abs(maxAngleInDegrees)) {
+        else if (!isALeftFlipper && Math.abs(this.getRotationInDegrees()) >= Math.abs(maxAngleInDegrees)) {
             itCan = true;
             if (isPositive && this.getRotationInDegrees() < minAngleInDegrees) {
                 itCan = false;

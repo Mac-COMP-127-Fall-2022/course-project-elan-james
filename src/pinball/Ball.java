@@ -5,6 +5,11 @@ import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Point;
 
+// Elan Levin and James McCarthy
+/**
+ * Represents a ball that moves around the canvas. 
+ * Contains methods to move the ball and check for collisions with the reflectors, walls, and flippers.
+ */
 public class Ball {
     private Ellipse ball;
     public static final double GRAVITY = -100;
@@ -44,7 +49,7 @@ public class Ball {
     }
 
     /**
-     * see return:
+     * See return:
      * @param ball
      * @param reflector
      * @return true if ball is colliding with reflector
@@ -60,7 +65,7 @@ public class Ball {
     }
 
     /**
-     * causes this ball to bounce of a circle with center:
+     * Causes this ball to bounce of a circle with center:
      * @param centerX
      * @param centerY
      */
@@ -77,8 +82,8 @@ public class Ball {
     }
 
     /**
-     * Figures out if the ball is touching one of the walls or paddles (lines)
-     * also adds some why value if the ball is hitting a flipper to reduce bugs.
+     * Figures out if the ball is touching one of the walls or flippers (lines).
+     * Also adds a y-value if the ball is hitting a flipper to reduce bugs.
      * @param wall
      * @return true if ball radius is inside a wall's stroke width
      */
@@ -129,7 +134,7 @@ public class Ball {
 
     /**
      * Checks to see if given point is within a line. 
-     * line is taken in point form.
+     * Line is taken in point form.
      * @param point
      * @param startPoint
      * @param endPoint
@@ -146,7 +151,7 @@ public class Ball {
     }
 
     /**
-     * removes the ball from the graphics group
+     * Removes the ball from the graphics group
      * @param gameLayer
      */
     public void removeBall(GraphicsGroup gameLayer) {
