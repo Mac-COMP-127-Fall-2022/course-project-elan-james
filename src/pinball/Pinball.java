@@ -22,13 +22,14 @@ public class Pinball {
     private List<Reflector> reflectors;
     private Wall leftFlipper, rightFlipper;
     private List<Wall> walls;
-    private Boolean leftKeyIsPressed, rightKeyIsPressed;
+    private boolean leftKeyIsPressed, rightKeyIsPressed;
+    private boolean isPaused;
 
     private GraphicsGroup rectangleLayer;
     private GraphicsGroup circleLayer;
 
     private Points points;
-    private int lives = 2;
+    private int lives = 3;
 
     private double physicsTimer = 0;
     
@@ -72,19 +73,10 @@ public class Pinball {
         } else {
             rightFlipper.rotateBy(dt * 3, false, false);
         }
-<<<<<<< Updated upstream
-=======
-    }// } else {
-        //     rightPaddle.rotateBy(dt * 5, false, true);
-        // }
-
-    public void createBall() {
-        ball = new Ball(300, 200, 500, -90, rectangleLayer);
->>>>>>> Stashed changes
     }
 
     public void createBall() {
-        ball = new Ball(100, 100, 400, -90, rectangleLayer);
+        ball = new Ball(300, 100, 400, -90, rectangleLayer);
     }
 
     public void createReflectors() {
@@ -105,13 +97,8 @@ public class Pinball {
     }
 
     public void createWalls() {
-<<<<<<< Updated upstream
         leftFlipper = new Wall(155, 530, 215, 550, Color.BLACK, canvas);
         rightFlipper = new Wall(345, 530, 285, 550, Color.BLACK, canvas);
-=======
-        leftPaddle = new Wall(155, 530, 215, 530, Color.BLACK, canvas);
-        rightPaddle = new Wall(345, 530, 285, 530, Color.BLACK, canvas);
->>>>>>> Stashed changes
         walls = Arrays.asList(new Wall(85, 455, 155, 530, Color.GREEN, canvas),
         new Wall(80, 400, 80, 450, Color.GREEN, canvas), 
         new Wall(415, 455, 345, 530, Color.GREEN, canvas),
@@ -153,7 +140,7 @@ public class Pinball {
     }
 
     public void handleBallInteractions(double dt) {
-        ball.moveBall(dt, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ball.moveBall(dt, CANVAS_WIDTH, CANVAS_HEIGHT, isPaused);
         ball.checkCanvasWallCollision(dt, CANVAS_WIDTH, CANVAS_HEIGHT);
         if (ball.checkCollision(rectangleLayer)) {
             ball.updateCollisionPosition(dt);
@@ -163,7 +150,7 @@ public class Pinball {
                 points.addPoints(1);
             }
         }
-        // belowFlippers();
+        belowFlippers();
     }
 
     public void ballReflectorInteractions() {
@@ -190,7 +177,8 @@ public class Pinball {
             if (lives == 0) {
                 gameOver();
             } else {
-                reset();
+                isPaused = true;
+                initializeRound();
             }
         }
     }
@@ -209,7 +197,7 @@ public class Pinball {
         canvas.closeWindow();
     }
 
-    public void reset() {
+    public void initializeRound() {
         ball.removeBall(rectangleLayer);
         createBall();
         GraphicsText livesLeft = new GraphicsText("You have " + lives + " lives left");
@@ -219,6 +207,9 @@ public class Pinball {
         canvas.draw();
         canvas.pause(3000);
         canvas.remove(livesLeft);
+        canvas.onKeyDown(event -> { 
+            isPaused = false;
+        });
     }
 
     public static void main(String[] args) {

@@ -50,13 +50,15 @@ public class Ball {
         return ball.getWidth();
     }
 
-    public boolean moveBall(double dt, double maxX, double maxY) {
-        x += dx * dt;
-        y += dy * dt;
-        if ((x > 0 && x < maxX) && (y > 0 && y < maxY)) {
-            ball.setPosition(x, y);
-            dy -= GRAVITY * dt;
-            return true;
+    public boolean moveBall(double dt, double maxX, double maxY, boolean isPaused) {
+        if (!isPaused) {
+            x += dx * dt;
+            y += dy * dt;
+            if ((x > 0 && x < maxX) && (y > 0 && y < maxY)) {
+                ball.setPosition(x, y);
+                dy -= GRAVITY * dt;
+                return true;
+            }
         }
         return false;
     }
@@ -132,7 +134,7 @@ public class Ball {
                 && ball.getWidth() / 2 + wall.getWidth() / 2 > ball.getCenter().distance(ballWallIntersection)) {
             bounceOffCircleWithCenter(ballWallIntersection.getX(), ballWallIntersection.getY());
             if (wall.isThisAFlipper()) {
-                this.y -= 3;
+                this.y -= 10;
             } 
             return true;
         } else {
