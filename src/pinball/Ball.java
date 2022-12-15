@@ -12,7 +12,7 @@ import edu.macalester.graphics.Point;
  */
 public class Ball {
     private Ellipse ball;
-    public static final double GRAVITY = -350;
+    private static final double GRAVITY = -350;
     private double x, y, dx, dy;
 
     public Ball(double x, double y, double initialSpeed, double initialAngle, GraphicsGroup gameLayer) {
